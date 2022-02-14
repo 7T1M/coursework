@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.loading.cover-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.loading.cover-page {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading .ant-spin {
+  color: #3e79f7;
+}
+.notification-container {
+  background: #ffffff;
+  box-shadow: 0px 7px 16px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  width: 300px;
+  height: 400px;
+}
+.primary-text {
+  color: "#1B3452" !important;
+  opacity: 1;
+}
+
+.divPotential {
+  background-color: #4385f4;
+  border-radius: 10px;
+  max-width: auto;
+  color: #4385f4;
+  height: 8px;
+  margin-top: 0.5%;
+  margin-bottom: 0.4%;
+}
+.spanADS {
+  width: 55px;
+  height: 33px;
+  font-family: Roboto;
+  font-size: 28px;
+  font-weight: bold;
+  color: #4385f4;
+  position: absolute;
+}
+.divReal {
+  max-width: 25%;
+  height: 8px;
+  border-radius: 10px;
+  background-color: #d9e7fd;
+  margin-top: 2%;
+}
+.anotherAds {
+  font-size: 12px;
+  color: #1b3452;
+  font-family: Roboto;
+  margin-top: 0.5%;
+}
+.background {
+  background-color: #fafafb;
+  border: 1px solid #edf2f9;
+  padding-top: 1.5%;
+  padding-bottom: 3%;
+  margin-top: 1%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+.titleKeywords {
+  font-family: Roboto;
+  width: 247px;
+  font-size: 22px;
+}
+.promoText {
+  font-family: Roboto;
+  font-size: 14px;
+}
+.side-nav {
+  height: calc(100vh - 70px);
+  position: fixed;
+  top: 70px;
+  box-shadow: 0 1px 4px -1px rgb(0 0 0 / 15%);
+  z-index: 999;
+  direction: ltr;
+  background-color: #fff;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+ant-pagination-item {
+  min-width: 30px;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  text-align: center;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #e6ebf1;
+  border-radius: 0.625rem;
+  outline: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.ant-pagination-item,
+.ant-pagination-total-text .ant-pagination-item {
+  border-radius: 50%;
+  border-color: transparent;
+  line-height: 30px;
+}
+.ant-pagination-item-active {
+  font-weight: 500;
+  background: #3e79f7;
+  border-color: #3e79f7;
+  color: white;
+}
+.ant-pagination-next .ant-pagination-item-link,
+.ant-pagination-prev .ant-pagination-item-link {
+  border-radius: 50%;
+}
+.ant-pagination-item-active a {
+  color: white !important;
+}
+.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-inline .ant-menu-item::after {
+  position: absolute !important;
+  top: 0px !important;
+  right: 0px !important;
+  bottom: 0px !important;
+  border-right: 3px solid rgb(62, 121, 247) !important;
+}
+.ant-menu-inline .ant-menu-item-selected::after,
+.ant-menu-inline .ant-menu-selected::after {
+  transform: scaleY(1);
+  opacity: 1;
+  transition: transform 0.15s cubic-bezier(0.645, 0.045, 0.355, 1) 0s,
+    opacity 0.15s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+.ant-menu-inline .ant-menu-item:after,
+.ant-menu-vertical .ant-menu-item:after,
+.ant-menu-vertical-left .ant-menu-item:after,
+.ant-menu-vertical-right .ant-menu-item:after {
+  border-right: 3 px solid #3e82f7;
+}
+.product-stat-description {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0 !important;
+  padding-top: 8px;
+}
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.logo {
+  padding: unset !important;
+}
+.logoText {
+  transition: opacity 0.5s, visibility 0s linear 0.3s;
+}

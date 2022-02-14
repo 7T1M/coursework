@@ -1,0 +1,40 @@
+.right-text-plan-main {
+  display: inline-flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding-right: 20px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #1B3452;
+}
+.right-text-plan-adder {
+  display: inline-flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding-right: 20px;
+  color: #51647b;
+  font-size: 14px
+}
+.ellips-container {
+  max-height: 31px;
+}
+.dropdown {
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: red;
+}
+.helperBlockTitle {
+  padding-bottom: 5px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #1B3452;
+}
+.helperBlockDescription {
+  color: #51647b;
+  font-size: 14px;
+}
+.linkedText {
+  color: #5388f7!important;
+}
