@@ -10,16 +10,17 @@ import {
   Select,
   Upload,
   message,
+  Tag
 } from "antd";
 import React from "react";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { getClaimType } from "../../../lib/getClaimType";
+import lib from "../../../lib/lib";
 import { useSelector } from "react-redux";
-import httpService from "../../../services/admin";
-import { getStatus } from "../../../lib/getStatus";
+import adminServices from "../../../services/admin";
 import { IClaimData } from "../../../shared-interfaces/IClaimData";
+import { IClaimType } from "../../../shared-interfaces/IClaimType";
 const { confirm } = Modal;
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -35,7 +36,7 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
     cancelText: "Нет",
     centered: true,
     onOk() {
-      httpService.deleteClaim(auth, id).then((res) => {
+      adminServices.deleteClaim(auth, id).then((res:any) => {
         console.log(res);
         setIsDataUpdated(true);
       });
@@ -91,8 +92,8 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
       width: "200px",
       dataIndex: "claimType",
 
-      render: (text:string) => {
-        return <div>{getClaimType(text, reduxData.claimTypes)}</div>;
+      render: (text:number) => {
+        return <div>{lib.getClaimType(text, reduxData.claimTypes)}</div>;
       },
     },
     {
@@ -107,12 +108,15 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
     {
       title: "Рейтинг",
       dataIndex: "rate",
+      render: (data: number) => {
+        return <div>{lib.ratingTag(data)}</div>
+      },
     },
     {
       title: "Статус",
       dataIndex: "status",
-      render: (text:string) => {
-        return <div>{getStatus(text)}</div>;
+      render: (text:number) => {
+        return <div>{lib.getStatus(text)}</div>;
       },
     },
     {
@@ -189,7 +193,7 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
   function onFinish(values:IClaimData) {
     values.id = choosenRecord?.id!;
     values.urlPreview = `http://localhost:3000${imgUrl}`;
-    httpService.updateClaim(_props.auth, values).then((res) => {
+    adminServices.updateClaim(_props.auth, values).then((res:any) => {
       console.log(res);
       _props.setIsDataUpdated(true);
       setIsEditModaleVisible(false);
@@ -201,12 +205,6 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
       <Col span={24}>
         <Table
           columns={columns}
-          //   pagination={{
-          //     position: ["bottomRight"],
-          //     pageSize: 250,
-          //     showSizeChanger: false,
-          //     total: count,
-          //   }}
           dataSource={_props.tasks}
           scroll={{ x: 1000 }}
           loading={_props.isLoading}
@@ -225,7 +223,7 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
               <Col span={24}>
                 <Title className="inline-block" level={3}>
                   Категория:{" "}
-                  {getClaimType(choosenRecord?.claimType, reduxData.claimTypes)}
+                  {lib.getClaimType(choosenRecord?.claimType!, reduxData.claimTypes)}
                 </Title>{" "}
               </Col>
               <Col span={24}>
@@ -243,12 +241,12 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
               </Col>
               <Col span={24}>
                 <Title className="inline-block" level={3}>
-                  Статус: {choosenRecord?.statusId}
+                  Статус: {lib.getStatus(choosenRecord?.statusId!)}
                 </Title>{" "}
               </Col>
               <Col span={24}>
                 <Title className="inline-block" level={3}>
-                  Rate: {choosenRecord?.rate}
+                  Рейтинг: {lib.ratingTag(choosenRecord?.rate!)}
                 </Title>{" "}
               </Col>
             </Row>
@@ -294,9 +292,9 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
                   <Form.Item name="claimType">
                     <Select placeholder="Категория">
                       {" "}
-                      {/* {reduxData.claimTypes.map((item) => (
+                       {reduxData.claimTypes.map((item: IClaimType) => (
                         <Option value={`${item.id}`}>{item.name}</Option>
-                      ))} */}
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>

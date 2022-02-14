@@ -7,16 +7,13 @@ import {
   Card,
   Select,
   Typography,
-  Upload,
-  Button,
 } from "antd";
-import { UploadOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import TasksTable from "./TasksTable";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { ITask } from "../../../shared-interfaces/ITask";
 const { Title } = Typography;
 const { Option } = Select;
@@ -53,7 +50,7 @@ export default function Tasks() {
 
   function getTasks() {
     setIsLoading(true);
-    httpService.getTasks(auth).then((res) => {
+    adminServices.getTasks(auth).then((res:any) => {
       console.log(res);
       setTasksData(res.data.data);
       setIsLoading(false);

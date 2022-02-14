@@ -1,7 +1,7 @@
 //import HeatMap from "../../../components/HeatMap";
 import { GoogleApiWrapper, Map, HeatMap } from "google-maps-react";
 import { useEffect } from "react";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import { useState } from "react";
@@ -35,7 +35,7 @@ function MapPage(props) {
     getClaims();
   }, []);
   function getClaims() {
-    httpService.getClaims(auth).then((res) => {
+    adminServices.getClaims(auth).then((res:any) => {
       getCoordinates(res.data.data);
     });
   }

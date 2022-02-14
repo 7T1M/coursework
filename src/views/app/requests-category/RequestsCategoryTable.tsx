@@ -3,8 +3,10 @@ import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import React from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { IClaimType } from "../../../shared-interfaces/IClaimType";
+import lib from "../../../lib/lib";
+import { useSelector } from "react-redux";
 const { confirm } = Modal;
 const { Title } = Typography;
 
@@ -18,13 +20,13 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
     cancelText: "Нет",
     centered: true,
     onOk() {
-      httpService
+      adminServices
         .deleteClaimCategory(auth, id)
-        .then((res) => {
+        .then((res:any) => {
           console.log(res);
           setIsDataUpdated(true);
         })
-        .catch((err) => console.log(err));
+        .catch((err:any) => console.log(err));
     },
     onCancel() {},
   });
@@ -44,6 +46,7 @@ const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
   const [isProfileModaleVisible, setIsProfileModaleVisible] =
     useState<boolean>(false);
   const [choosenRecord, setChoosenRecord] = useState<IClaimType>();
+  const reduxData = useSelector((state:any)=> state.app)
   const columns = [
     {
       title: "Номер",
@@ -53,10 +56,16 @@ const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
     {
       title: "Контролирующий орган",
       dataIndex: "serviceControlId",
+      render:(data:number)=>{
+        return <span>{lib.getService(data,reduxData.services)}</span>
+      }
     },
     {
       title: "Исполнительный орган",
       dataIndex: "serviceExecuteId",
+      render:(data:number)=>{
+        return <span>{lib.getService(data,reduxData.services)}</span>
+      }
     },
 
     {

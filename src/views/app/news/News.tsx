@@ -17,7 +17,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import {NewsPreview} from "./NewsPreview";
 import { INews } from "./INews";
 
@@ -83,28 +83,28 @@ export default function News() {
     setIsListLoading(true);
     values.previewImageUrl = imgUrl;
 
-    httpService
+    adminServices
       .createNews(auth, values)
-      .then((res) => {
+      .then((res:any) => {
         console.log(res);
         setIsDataUpdated(true);
         setIsModaleVisible(false);
         setIsListLoading(false);
         form.resetFields();
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
   function getNews() {
     setIsListLoading(true);
-    httpService
+    adminServices
       .getNews(auth)
-      .then((res) => {
+      .then((res:any) => {
         setLoadedNews(res.data.data);
         setIsDataUpdated(false);
         console.log(res);
         setIsListLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   function renderNews(news: INews) {
@@ -116,7 +116,7 @@ export default function News() {
         className="cursor-pointer"
       >
         <NewsPreview
-          id={news.id ?? 1}
+          id={news.id!}
           name={news.name}
           title={news.title}
           description={news.description}

@@ -12,11 +12,10 @@ import {
 } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
-import httpService from "../../../services/admin";
+import { useState } from "react";
+import adminServices from "../../../services/admin";
 import { useSelector } from "react-redux";
-import { getCity } from "../../../lib/getCity";
-import { getRoute } from "../../../lib/getRoute";
+ import lib from "../../../lib/lib"
 import { IDriver } from "../../../shared-interfaces/IDriver";
 import React from "react";
 const { Option } = Select;
@@ -33,13 +32,13 @@ function showDeleteConfirm(id: number, updateData: any, auth: string) {
     cancelText: "Нет",
     centered: true,
     onOk() {
-      httpService
+      adminServices
         .deleteDriver(auth, id)
-        .then((res) => {
+        .then((res:any) => {
           console.log(res);
           updateData(true);
         })
-        .catch((err) => console.log(err));
+        .catch((err:any) => console.log(err));
     },
     onCancel() {},
   });
@@ -85,7 +84,7 @@ const DriversTable: React.FC<IDriversTableProps> = ({
       width: "30px",
       dataIndex: "routeId",
       render: (data: number) => {
-        return <div>{getRoute(data, reduxData.routes)}</div>;
+        return <div>{lib.getRoute(data, reduxData.routes)}</div>;
       },
     },
 
@@ -94,7 +93,7 @@ const DriversTable: React.FC<IDriversTableProps> = ({
       dataIndex: "cityId",
       width: "200px",
       render: (data: number) => {
-        return <div>{getCity(data, reduxData.cities)}</div>;
+        return <div>{lib.getCity(data, reduxData.cities)}</div>;
       },
     },
 
@@ -139,16 +138,16 @@ const DriversTable: React.FC<IDriversTableProps> = ({
   ];
   function onFinish(values:IDriver) {
     values.id = choosenRecord?.id!;
-    httpService
+    adminServices
       .updateDriver(auth, values)
       .finally(() => {
         setIsDataUpdated(true);
         setIsEditModaleVisible(false);
         form.resetFields();
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
 
-    // httpService.
+    // adminServices.
   }
 
   //https://www.google.ru/maps/@48.0077235,37.8246693,15.25z

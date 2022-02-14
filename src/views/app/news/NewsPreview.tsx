@@ -16,7 +16,7 @@ import {
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { INews } from "./INews";
 import { IEditNewsData } from "./IEditNewsData";
 
@@ -25,7 +25,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 interface INewsPreviewProps {
-  id: Number;
+  id: number;
   name: string;
   description: string;
   image: string;
@@ -47,26 +47,26 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
   }
 
   function handleDeleteClick() {
-    httpService
+    adminServices
       .deleteNews(auth, _props.id)
       .finally(() => {
         _props.setIsDataUpdated(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   function onFinish(values: IEditNewsData) {
     values.id = _props.id;
     values.previewImageUrl = imgUrl === "" ? undefined : imgUrl;
     console.log(values);
-    httpService
+    adminServices
       .updateNews(auth, values)
       .finally(() => {
         _props.setIsDataUpdated(true);
         setIsEditModalVisible(false);
         form.resetFields();
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
   const uploadProps = {
     name: "file",

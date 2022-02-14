@@ -17,7 +17,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { setClaimTypes } from "../../../redux/appSlice";
 import { IClaimType } from "../../../shared-interfaces/IClaimType";
 const { Title } = Typography;
@@ -60,7 +60,7 @@ export default function RequestsCategory() {
   }
   function getCategories() {
     setIsDataLoading(true);
-    httpService.getClaimCategories(auth).then((res) => {
+    adminServices.getClaimCategories(auth).then((res:any) => {
       console.log(res);
       setIsDataUpdated(false);
       setCategories(res.data.data);
@@ -69,15 +69,15 @@ export default function RequestsCategory() {
     });
   }
   function createClaimType(data:IClaimType) {
-    httpService
+    adminServices
       .createClaimType(auth, data)
-      .then((res) => {
+      .then((res:any) => {
         console.log(res);
         setIsDataUpdated(true);
         setIsCreateClaimModalVisible(false);
         form.resetFields();
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
   function priorityTag(priority: number) {
     if (priority <= 3) {

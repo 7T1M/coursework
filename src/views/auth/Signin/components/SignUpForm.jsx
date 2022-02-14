@@ -1,20 +1,20 @@
 import React from "react";
-import { Button, Form, Input, Divider, Alert } from "antd";
+import { Button, Form, Input } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-import httpService from "../../../../services/admin";
-import { setAuthToken } from "../../../../redux/appSlice";
-import { useDispatch } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+// import adminServices from "../../../../services/admin";
+// import { setAuthToken } from "../../../../redux/appSlice";
+// import { useDispatch } from "react-redux";
 
 export default function SignUpForm() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
 
   function onSubmit(values) {
-   httpService.signUp(values.email,values.password).then((res)=> {
-     console.log(res)
+  //  adminServices.signUp(values.email,values.password).then((res:any)=> {
+  //    console.log(res)
      
-   })
+  //  })
   }
   return (
     <Form layout="vertical" onFinish={onSubmit} name="login-form">

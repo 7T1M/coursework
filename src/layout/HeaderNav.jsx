@@ -27,7 +27,7 @@ export default function HeaderNav() {
     <Header className="bg-white app-header dark">
       <div className="app-header-wrapper">
         <div className="logo" style={{ width: 250 }}>
-          <img classname="cursor-pointer" src={dpr} alt="logo" />
+          <img className="cursor-pointer" src={dpr} alt="logo" />
           <div className="logoText">ТВОЯ РЕСПУБЛИКА</div>
         </div>
         <div className="nav mt-1" onClick={OnCollapse}>

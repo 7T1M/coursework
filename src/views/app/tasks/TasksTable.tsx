@@ -5,29 +5,26 @@ import {
   Table,
   Tag,
   Modal,
-  Typography,
   Button,
   Input,
   Select,
-  Checkbox,
+
   Form,
 } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { EditOutlined,} from "@ant-design/icons";
 import { useState } from "react";
 
 import { useSelector } from "react-redux";
 
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-import httpService from "../../../services/admin";
-import { getStatus } from "../../../lib/getStatus";
-import { getService } from "../../../lib/getService";
+import adminServices from "../../../services/admin";
+import lib from "../../../lib/lib";
 import status from "../../../constants/status";
 import taskTypes from "../../../constants/taskTypes";
 import TextArea from "antd/lib/input/TextArea";
 import { ITask } from "../../../shared-interfaces/ITask";
+import { IService } from "../../../shared-interfaces/IService";
 
-const { confirm } = Modal;
-const { Title } = Typography;
+
 const { Option } = Select;
 
 interface ITasksTableProps {
@@ -60,8 +57,8 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
       title: "Орган",
       dataIndex: "serviceId",
       width: "50px",
-      render: (data: string, record: ITask) => {
-        return <div>{getService(data, reduxData.services)}</div>;
+      render: (data: number, record: ITask) => {
+        return <div>{lib.getService(data, reduxData.services)}</div>;
       },
     },
 
@@ -83,17 +80,7 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
       width: "50px",
 
       render: (data: number) => {
-        if (data) {
-          if (data < 33) {
-            return <Tag color={"red"}>{data}</Tag>;
-          } else if (data >= 33 && data < 66) {
-            return <Tag color={"yellow"}>{data}</Tag>;
-          } else if (data >= 66) {
-            return <Tag color={"green"}>{data}</Tag>;
-          }
-        } else {
-          return "Нет рейтинга ";
-        }
+        return <div>{lib.ratingTag(data)}</div>
       },
     },
     {
@@ -101,7 +88,7 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
       dataIndex: "statusId",
       width: "100px",
       render: (text: number) => {
-        return <div>{getStatus(text)}</div>;
+        return <div>{lib.getStatus(text)}</div>;
       },
     },
     {
@@ -126,26 +113,10 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
     },
   ];
 
-  function verificationTag(status: string) {
-    if (status === "Да") {
-      return <Tag color={"green"}>{status}</Tag>;
-    } else {
-      return <Tag color={"red"}>{status}</Tag>;
-    }
-  }
-  function ratingTag(rate: number) {
-    if (rate < 33) {
-      return <Tag color={"red"}>{rate}</Tag>;
-    } else if (rate >= 33 && rate < 66) {
-      return <Tag color={"yellow"}>{rate}</Tag>;
-    } else if (rate >= 66) {
-      return <Tag color={"green"}>{rate}</Tag>;
-    }
-  }
   function onFinish(values:ITask) {
     values.id = choosenRecord?.id!;
     console.log(values);
-    httpService.updateTask(auth, values).then((res) => {
+    adminServices.updateTask(auth, values).then((res:any) => {
       _props.setIsDataUpdated(true);
       setIsEditModaleVisible(false);
       form.resetFields();
@@ -153,19 +124,19 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
   }
 
   function renderServices() {
-    // return reduxData.services.map((elem, index) => {
-    //   return <Option value={elem.id}>{elem.name}</Option>;
-    // });
+    return reduxData.services.map((elem: IService) => {
+      return <Option value={elem.id}>{elem.name}</Option>;
+    });
   }
 
   function renderStatuses() {
-    return status.map((elem, index) => {
+    return status.map((elem) => {
       return <Option value={elem.id}>{elem.name}</Option>;
     });
   }
 
   function renderTaskTypes() {
-    return taskTypes.map((elem, index) => {
+    return taskTypes.map((elem) => {
       return <Option value={elem.id}>{elem.name}</Option>;
     });
   }
@@ -175,12 +146,6 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
       <Col span={24}>
         <Table
           columns={columns}
-          //   pagination={{
-          //     position: ["bottomRight"],
-          //     pageSize: 250,
-          //     showSizeChanger: false,
-          //     total: count,
-          //   }}
           dataSource={_props.data}
           loading={_props.isLoading}
           scroll={{ x: 1000 }}
@@ -249,7 +214,7 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
                 <Col span={24}>
                   <Form.Item name="serviceId">
                     <Select placeholder="Выберите орган">
-                      {/* {renderServices()} */}
+                       {renderServices()} 
                     </Select>
                   </Form.Item>
                 </Col>

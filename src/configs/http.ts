@@ -1,7 +1,7 @@
 
-var httpConfig = {
-  host: "http://localhost:3000",
-  modifier: {
+export default class httpConfig  {
+  host = "http://192.168.1.30:3000"
+  modifier = {
     auth: "/auth",
     storage: "/storage",
     services: "/services",
@@ -20,112 +20,111 @@ var httpConfig = {
     cities: "/cities",
     points: "/points",
     geo: "./geo",
-  },
-  get login() {
+  }
+  login() {
     return this.host + this.modifier.auth + "/signin";
-  },
-  get signUp() {
+  }
+  signUp() {
     return this.host + this.modifier.auth + "/signup";
-  },
-  get addFileToStorage() {
+  }
+  addFileToStorage() {
     return this.host + this.modifier.storage + "/load";
-  },
-  get getServiceTypes() {
+  }
+  getServiceTypes() {
     return this.host + this.modifier.services + "/types";
-  },
-  get getServices() {
+  }
+  getServices() {
     return this.host + this.modifier.services;
-  },
-  get getClaims() {
+  }
+  getClaims() {
     return this.host + this.modifier.claims;
-  },
-  get getTasks() {
+  }
+  getTasks() {
     return this.host + this.modifier.tasks;
-  },
-  getFile(fileId) {
+  }
+  getFile(fileId:number) {
     return this.host + this.modifier.storage + "/" + fileId;
-  },
-  get createServiceType() {
+  }
+  createServiceType() {
     return this.host + this.modifier.service + "/types";
-  },
-  get createService() {
+  }
+  createService() {
     return this.host + this.modifier.service;
-  },
-  get createClaim() {
+  }
+  createClaim() {
     return this.host + this.modifier.claim;
-  },
-  get createClaimsTypes() {
+  }
+  createClaimsTypes() {
     return this.host + this.modifier.claim + "/type";
-  },
-  get createDriver() {
+  }
+  createDriver() {
     return this.host + this.modifier.driver;
-  },
-  get getNews() {
+  }
+  getNews() {
     return this.host + this.modifier.news;
-  },
-  get createNews() {
+  }
+  createNews() {
     return this.host + this.modifier.news;
-  },
-  updateNews(id) {
+  }
+  updateNews(id:number) {
     return this.host + this.modifier.news + `/${id}`;
-  },
-  get getDrivers() {
+  }
+  getDrivers() {
     return this.host + this.modifier.drivers;
-  },
-  updateDriver(id) {
+  }
+  updateDriver(id:number) {
     return this.host + this.modifier.driver + `/${id}`;
-  },
-  get getRoutes() {
+  }
+  getRoutes() {
     return this.host + this.modifier.routes;
-  },
-  updateRoute(id) {
+  }
+  updateRoute(id:number) {
     return this.host + this.modifier.route + `/${id}`;
-  },
-  deleteRoute(id) {
+  }
+  deleteRoute(id:number) {
     return this.host + this.modifier.route + `/${id}`;
-  },
-  deleteDriver(id) {
+  }
+  deleteDriver(id:number) {
     return this.host + this.modifier.driver + `/${id}`;
-  },
-  deleteNews(id) {
+  }
+  deleteNews(id:number) {
     return this.host + this.modifier.news + `/${id}`;
-  },
-  get getClaimCategories() {
+  }
+  getClaimCategories() {
     return this.host + this.modifier.claims + "/types";
-  },
-  // updateClaimCategory(token,data){
+  }
+  // updateClaimCategory(tokendata){
   //   return this.host + this.modifier.claim +
   // }
-  deleteClaimCategory(id) {
+  deleteClaimCategory(id:number) {
     return this.host + this.modifier.claim + `/type/${id}`;
-  },
-  get getUsers() {
+  }
+  getUsers() {
     return this.host + this.modifier.users;
-  },
-  deleteUser(id) {
+  }
+  deleteUser(id:number) {
     return this.host + this.modifier.user + `/${id}`;
-  },
-  get createRoute() {
+  }
+  createRoute() {
     return this.host + this.modifier.route;
-  },
-  get getCities() {
+  }
+  getCities() {
     return this.host + this.modifier.cities;
-  },
-  get getPoints() {
+  }
+  getPoints() {
     return this.host + this.modifier.points;
-  },
-  getGeoAdress(lat, lng) {
+  }
+  getGeoAdress(lat:number, lng:number) {
     return this.host + this.modifier.geo + `/${lat}/${lng}`;
-  },
-  deleteClaim(id) {
+  }
+  deleteClaim(id:number) {
     return this.host + this.modifier.claim + `/${id}`;
-  },
-  updateClaim(id) {
+  }
+  updateClaim(id:number) {
     return this.host + this.modifier.claim + `/${id}`;
-  },
-  updateTask(id) {
+  }
+  updateTask(id:number) {
     return this.host + this.modifier.task + `/${id}`;
-  },
+  }
 };
 
-export default httpConfig;

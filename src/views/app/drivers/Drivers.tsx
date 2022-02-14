@@ -16,7 +16,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { IDriver } from "../../../shared-interfaces/IDriver";
 const { Title } = Typography;
 const { Option } = Select;
@@ -59,9 +59,9 @@ export default function Drivers() {
   }
   function getDrivers() {
     setIsDataLoading(true);
-    httpService
+    adminServices
       .getDrivers(auth)
-      .then((res) => {
+      .then((res:any) => {
         const data: Array<IDriver> = res.data.data;
         console.log(data);
         setDrivers(data);
@@ -69,19 +69,19 @@ export default function Drivers() {
         setIsDataLoading(false);
         console.log(drivers);
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   function onFinish(values: IDriver) {
     console.log(values);
-    httpService
+    adminServices
       .createDriver(auth, values)
       .finally(() => {
         setUpdateData(true);
         setIsCreateModalVisible(false);
         form.resetFields();
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   return (

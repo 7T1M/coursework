@@ -6,7 +6,7 @@ export interface IClaimData {
   address: string;
   urlPreview: string;
   description: string;
-  claimType: string;
+  claimType: number;
   statusId: number;
   rate: number;
 }

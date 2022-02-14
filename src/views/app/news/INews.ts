@@ -2,7 +2,7 @@ export interface INews {
   name: string;
   title: string;
   previewImageUrl: string;
-  cityId: Number;
+  cityId: number;
   description: string;
-  id?:Number
+  id?:number
 }

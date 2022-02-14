@@ -16,7 +16,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { IService } from "../../../shared-interfaces/IService";
 
 const { Title } = Typography;
@@ -59,26 +59,26 @@ export default function Managers() {
   }
   function getServices() {
     setIsDataLoading(true);
-    httpService
+    adminServices
       .getServices(auth)
-      .then((res) => {
+      .then((res:any) => {
         console.log(res);
         setManagers(res.data.data);
         setIsDataLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   function onFinish(values: IService) {
     console.log(values);
-    httpService
+    adminServices
       .createService(auth, values)
       .finally(() => {
         setIsDataUpdated(true);
         setIsCreateModalVisible(false);
         form.resetFields();
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   return (

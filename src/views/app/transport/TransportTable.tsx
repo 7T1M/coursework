@@ -12,10 +12,9 @@ import {
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 import { useSelector } from "react-redux";
-import { getCity } from "../../../lib/getCity";
-import { getPoint } from "../../../lib/getPoint";
+import lib from "../../../lib/lib"
 import { IRoute } from "../../../shared-interfaces/IRoute";
 import React from "react";
 
@@ -32,13 +31,13 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
     cancelText: "Нет",
     centered: true,
     onOk() {
-      httpService
+      adminServices
         .deleteRoute(auth, id)
-        .then((res) => {
+        .then((res:any) => {
           console.log(res);
           setIsDataUpdated(true);
         })
-        .catch((err) => console.log(err));
+        .catch((err:any) => console.log(err));
     },
     onCancel() {
       console.log("Cancel");
@@ -92,7 +91,7 @@ const TransportTable: React.FC<ITransportTableProps> = ({
       dataIndex: "startPointId",
       width: "150px",
       render: (text: number) => {
-        return <div>{getPoint(text, reduxData.points)}</div>;
+        return <div>{lib.getPoint(text, reduxData.points)}</div>;
       },
     },
     {
@@ -100,14 +99,14 @@ const TransportTable: React.FC<ITransportTableProps> = ({
       dataIndex: "endPointId",
       width: "150px",
       render: (text:number) => {
-        return <div>{getPoint(text, reduxData.points)}</div>;
+        return <div>{lib.getPoint(text, reduxData.points)}</div>;
       },
     },
     {
       title: "Город",
       dataIndex: "cityId",
       render: (data: number) => {
-        return <div>{getCity(data, reduxData.cities)}</div>;
+        return <div>{lib.getCity(data, reduxData.cities)}</div>;
       },
     },
     {
@@ -149,14 +148,14 @@ const TransportTable: React.FC<ITransportTableProps> = ({
 
   function onFinish(values:IRoute) {
     values.id = choosenRecord?.id;
-    httpService
+    adminServices
       .updateRoute(auth, values)
       .finally(() => {
         setIsEditModaleVisible(false);
         setIsDataUpdated(true);
         form.resetFields();
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   return (
@@ -218,9 +217,9 @@ const TransportTable: React.FC<ITransportTableProps> = ({
                 <Col span={12}>
                   <Form.Item name="startPointId">
                     <Select placeholder="Точка отправления">
-                      {/* {reduxData.points.map((item) => (
+                       {reduxData.points.map((item:any) => (
                         <Option value={`${item.id}`}>{item.name}</Option>
-                      ))} */}
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -229,9 +228,9 @@ const TransportTable: React.FC<ITransportTableProps> = ({
                 <Col span={12}>
                   <Form.Item name="endPointId">
                     <Select placeholder="Точка назначения">
-                      {/* {reduxData.points.map((item) => (
+                       {reduxData.points.map((item:any) => (
                         <Option value={`${item.id}`}>{item.name}</Option>
-                      ))} */}
+                      ))} 
                     </Select>
                   </Form.Item>
                 </Col>
@@ -240,9 +239,9 @@ const TransportTable: React.FC<ITransportTableProps> = ({
                 <Col span={12}>
                   <Form.Item name="cityId">
                     <Select placeholder="Город">
-                      {/* {reduxData.cities.map((item) => (
+                       {reduxData.cities.map((item:any) => (
                         <Option value={`${item.id}`}>{item.name}</Option>
-                      ))} */}
+                      ))} 
                     </Select>
                   </Form.Item>
                 </Col>

@@ -9,7 +9,7 @@ import {
   Select,
   Button,
 } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {  EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import React from "react";
 import { IService } from "../../../shared-interfaces/IService";

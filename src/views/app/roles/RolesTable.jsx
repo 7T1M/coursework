@@ -1,33 +1,30 @@
-import { Col, Row, Table, Modal, Typography, Input, Button } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { Col, Row, Table } from "antd";
+// import { useState } from "react";
 import roles from "./data";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-const { confirm } = Modal;
-const { Title } = Typography;
-const { TextArea } = Input;
-function showDeleteConfirm() {
-  confirm({
-    title: "Вы уверены что хотите удалить эту запись?",
-    icon: <ExclamationCircleOutlined />,
-    content: "это действие необратимо",
-    okText: "Да",
-    okType: "danger",
-    cancelText: "Нет",
-    centered: "yes",
-    onOk() {
-      console.log("OK");
-    },
-    onCancel() {
-      console.log("Cancel");
-    },
-  });
-}
+// const { Title } = Typography;
+// const { TextArea } = Input;
+// function showDeleteConfirm() {
+//   confirm({
+//     title: "Вы уверены что хотите удалить эту запись?",
+//     icon: <ExclamationCircleOutlined />,
+//     content: "это действие необратимо",
+//     okText: "Да",
+//     okType: "danger",
+//     cancelText: "Нет",
+//     centered: "yes",
+//     onOk() {
+//       console.log("OK");
+//     },
+//     onCancel() {
+//       console.log("Cancel");
+//     },
+//   });
+// }
 
-const ProductsDatatable = ({ pageSize, count }) => {
-  const [isProfileModaleVisible, setIsProfileModaleVisible] = useState(false);
-  const [isEditModaleVisible, setIsEditModaleVisible] = useState(false);
-  const [choosenRecord, setChoosenRecord] = useState({});
+const ProductsDatatable = () => {
+  // const [isProfileModaleVisible, setIsProfileModaleVisible] = useState(false);
+  // const [isEditModaleVisible, setIsEditModaleVisible] = useState(false);
+  // const [choosenRecord, setChoosenRecord] = useState({});
   const columns = [
     {
       title: "Номер",
@@ -104,27 +101,19 @@ const ProductsDatatable = ({ pageSize, count }) => {
     // },
   ];
 
-  function onChange(pagination, filters, sorter, extra) {
-    console.log("params", pagination, filters, sorter, extra);
-  }
+
 
   return (
     <Row>
       <Col span={24}>
         <Table
           columns={columns}
-          //   pagination={{
-          //     position: ["bottomRight"],
-          //     pageSize: 250,
-          //     showSizeChanger: false,
-          //     total: count,
-          //   }}
+         
           dataSource={roles.roles}
-          onChange={onChange}
           scroll={{ x: 1000 }}
         />
       </Col>
-      <Modal
+      {/* <Modal
         visible={isProfileModaleVisible}
         onCancel={() => setIsProfileModaleVisible(false)}
         footer={null}
@@ -197,7 +186,7 @@ const ProductsDatatable = ({ pageSize, count }) => {
         <Row justify="center" className="pt-5">
           <Button type="primary">Сохранить</Button>
         </Row>
-      </Modal>
+      </Modal> */}
     </Row>
   );
 };

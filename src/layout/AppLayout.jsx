@@ -6,7 +6,7 @@ import SiderNav from "./SiderNav";
 import HeaderNav from "./HeaderNav";
 import AppRoutes from "../components/AppRoutes";
 import { useEffect } from "react";
-import httpService from "../services/admin";
+import adminServices from "../services/admin";
 import {
   setCities,
   setPoints,
@@ -14,7 +14,6 @@ import {
   setClaimTypes,
   setServices,
 } from "../redux/appSlice";
-// import Footer from "./Footer";
 const { Content } = Layout;
 
 export default function AppLayout() {
@@ -22,24 +21,25 @@ export default function AppLayout() {
   const collapsed = useSelector((state) => state.sideNav.collapsed);
   const auth = useSelector((state) => state.app.authToken);
   const padding = collapsed ? "80px" : "250px";
-  //console.log(useSelector((state) => state.app));
+
+  console.log(useSelector((state) => state.app));
   useEffect(() => {
-    httpService.getCities(auth).then((res) => {
+    adminServices.getCities(auth).then((res) => {
       dispatch(setCities(res.data.data));
     });
-    httpService.getPoints(auth).then((res) => {
+    adminServices.getPoints(auth).then((res) => {
       dispatch(setPoints(res.data.data));
     });
-    httpService.getRoutes(auth).then((res) => {
+    adminServices.getRoutes(auth).then((res) => {
       dispatch(setRoutes(res.data.data));
     });
-    httpService
+    adminServices
       .getClaimsTypes(auth)
       .then((res) => {
         dispatch(setClaimTypes(res.data.data));
       })
       .catch((err) => console.log(err));
-    httpService.getServices(auth).then((res) => {
+    adminServices.getServices(auth).then((res) => {
       dispatch(setServices(res.data.data));
     });
   }, []);

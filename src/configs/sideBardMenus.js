@@ -5,7 +5,6 @@ import {
   IdcardOutlined,
   FormOutlined,
   AlertOutlined,
-  BellOutlined,
   UnorderedListOutlined,
   TeamOutlined,
   FileDoneOutlined,

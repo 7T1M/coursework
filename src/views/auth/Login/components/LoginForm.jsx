@@ -1,16 +1,14 @@
-import React from "react";
 import { Button, Form, Input } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import httpService from "../../../../services/admin";
+import adminServices from "../../../../services/admin";
 import { setAuthToken } from "../../../../redux/appSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
 
-  const auth = useSelector((state)=> state.app)
   function onSubmit(values) {
-    httpService
+    adminServices
       .login(values.email, values.password)
       .then((res) => {
         dispatch(setAuthToken(res.data.data.access_token));

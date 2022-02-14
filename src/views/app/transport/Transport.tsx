@@ -3,7 +3,6 @@ import { SearchOutlined } from "@ant-design/icons";
 import {
   Col,
   Row,
-  Table,
   Modal,
   Form,
   Typography,
@@ -17,8 +16,8 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
-import httpService from "../../../services/admin";
-import { setPoints, setRoutes } from "../../../redux/appSlice";
+import adminServices from "../../../services/admin";
+import { setRoutes } from "../../../redux/appSlice";
 import { IRoute } from "../../../shared-interfaces/IRoute";
 
 const { Title } = Typography;
@@ -60,26 +59,26 @@ export default function Transport() {
   }
   function getRoutes() {
     setIsDataLoading(true);
-    httpService
+    adminServices
       .getRoutes(auth)
-      .then((res) => {
+      .then((res:any) => {
         console.log(res);
         setLocalRoutes(res.data.data);
         setIsDataUpdated(false);
         setIsDataLoading(false);
         setRoutes(res.data.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
   function onFinish(values: IRoute) {
-    httpService
+    adminServices
       .createRoute(auth, values)
-      .then((res) => {
+      .then((res:any) => {
         setIsDataUpdated(true);
         console.log(res);
         setIsCreateModalVisible(false);
       })
-      .catch((err) => console.log(err))
+      .catch((err:any) => console.log(err))
       .finally(() => form.resetFields());
   }
   return (
@@ -186,9 +185,9 @@ export default function Transport() {
                 <Col span={12}>
                   <Form.Item name="startPointId">
                     <Select placeholder="Точка отправления">
-                      {reduxData.points.map((item:any) => (
+                      {reduxData.points.map((item: any) => (
                         <Option value={`${item.id}`}>{item.name}</Option>
-                      ))} 
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -197,9 +196,9 @@ export default function Transport() {
                 <Col span={12}>
                   <Form.Item name="endPointId">
                     <Select placeholder="Точка назначения">
-                       {reduxData.points.map((item:any) => (
+                      {reduxData.points.map((item: any) => (
                         <Option value={`${item.id}`}>{item.name}</Option>
-                      ))} 
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -208,9 +207,9 @@ export default function Transport() {
                 <Col span={12}>
                   <Form.Item name="cityId">
                     <Select placeholder="Город">
-                      {reduxData.cities.map((item:any) => (
+                      {reduxData.cities.map((item: any) => (
                         <Option value={`${item.id}`}>{item.name}</Option>
-                      ))} 
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>

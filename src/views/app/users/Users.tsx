@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import ChartWidget from "../../../components";
 import { weeklyActiveData } from "./chartData";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -48,14 +48,14 @@ export default function Users() {
   
   function getUsers() {
     setIsDataLoading(true);
-    httpService
+    adminServices
       .getUsers(auth)
-      .then((res) => {
+      .then((res:any) => {
         setUsers(res.data.data);
         setIsDataUpdated(false);
         setIsDataLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err:any) => console.log(err));
   }
 
   return (

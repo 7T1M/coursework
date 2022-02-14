@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import { ExcelRenderer } from "react-excel-renderer";
-import httpService from "../../../services/admin";
+import adminServices from "../../../services/admin";
 
 import tasks from "./data";
 const { Title } = Typography;
@@ -50,7 +50,7 @@ export default function Requests() {
   }
   function getClaims() {
     setIsLoading(true);
-    httpService.getClaims(auth).then((res) => {
+    adminServices.getClaims(auth).then((res:any) => {
       console.log(res);
       setClaims(res.data.data);
       setIsLoading(false);
@@ -68,13 +68,13 @@ export default function Requests() {
   //   console.log(fileObj);
   //   //just pass the fileObj as parameter
   //   ExcelRenderer(fileObj, (err, resp) => {
-  //     if (err) {
+  //     if (err:any) {
   //       console.log(err);
   //     } else {
         
   //       const tempData = [];
   //       for (let i = 1; i < resp.rows.length; i++) {
-  //         httpService
+  //         adminServices
   //           .createClaim(auth, {
   //             claimType: resp.rows[i][0],
   //             description: resp.rows[i][1],
@@ -82,11 +82,11 @@ export default function Requests() {
 
   //             title: resp.rows[i][3],
   //           })
-  //           .then((res) => {
+  //           .then((res:any) => {
   //             console.log(res);
   //             setIsDataUpdated(true);
   //           })
-  //           .catch((err) => console.log(err));
+  //           .catch((err:any) => console.log(err));
   //       }
   //       //setTasksData(tasksData.concat(tempData));
   //     }
