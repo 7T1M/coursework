@@ -21,109 +21,109 @@ export default class httpConfig  {
     points: "/points",
     geo: "./geo",
   }
-  login() {
+  login(): string {
     return this.host + this.modifier.auth + "/signin";
   }
-  signUp() {
+  signUp(): string {
     return this.host + this.modifier.auth + "/signup";
   }
-  addFileToStorage() {
+  addFileToStorage(): string {
     return this.host + this.modifier.storage + "/load";
   }
-  getServiceTypes() {
+  getServiceTypes(): string {
     return this.host + this.modifier.services + "/types";
   }
-  getServices() {
+  getServices(): string {
     return this.host + this.modifier.services;
   }
-  getClaims() {
+  getClaims(): string {
     return this.host + this.modifier.claims;
   }
-  getTasks() {
+  getTasks(): string {
     return this.host + this.modifier.tasks;
   }
-  getFile(fileId:number) {
+  getFile(fileId:number): string {
     return this.host + this.modifier.storage + "/" + fileId;
   }
-  createServiceType() {
+  createServiceType(): string {
     return this.host + this.modifier.service + "/types";
   }
-  createService() {
+  createService(): string {
     return this.host + this.modifier.service;
   }
-  createClaim() {
+  createClaim(): string {
     return this.host + this.modifier.claim;
   }
-  createClaimsTypes() {
+  createClaimsTypes(): string {
     return this.host + this.modifier.claim + "/type";
   }
-  createDriver() {
+  createDriver(): string {
     return this.host + this.modifier.driver;
   }
-  getNews() {
+  getNews(): string {
     return this.host + this.modifier.news;
   }
-  createNews() {
+  createNews(): string {
     return this.host + this.modifier.news;
   }
-  updateNews(id:number) {
+  updateNews(id:number): string {
     return this.host + this.modifier.news + `/${id}`;
   }
-  getDrivers() {
+  getDrivers(): string {
     return this.host + this.modifier.drivers;
   }
-  updateDriver(id:number) {
+  updateDriver(id:number): string {
     return this.host + this.modifier.driver + `/${id}`;
   }
-  getRoutes() {
+  getRoutes(): string {
     return this.host + this.modifier.routes;
   }
-  updateRoute(id:number) {
+  updateRoute(id:number): string {
     return this.host + this.modifier.route + `/${id}`;
   }
-  deleteRoute(id:number) {
+  deleteRoute(id:number): string {
     return this.host + this.modifier.route + `/${id}`;
   }
-  deleteDriver(id:number) {
+  deleteDriver(id:number): string {
     return this.host + this.modifier.driver + `/${id}`;
   }
-  deleteNews(id:number) {
+  deleteNews(id:number): string {
     return this.host + this.modifier.news + `/${id}`;
   }
-  getClaimCategories() {
+  getClaimCategories(): string {
     return this.host + this.modifier.claims + "/types";
   }
   // updateClaimCategory(tokendata){
   //   return this.host + this.modifier.claim +
   // }
-  deleteClaimCategory(id:number) {
+  deleteClaimCategory(id:number): string {
     return this.host + this.modifier.claim + `/type/${id}`;
   }
-  getUsers() {
+  getUsers(): string {
     return this.host + this.modifier.users;
   }
-  deleteUser(id:number) {
+  deleteUser(id:number): string {
     return this.host + this.modifier.user + `/${id}`;
   }
-  createRoute() {
+  createRoute(): string {
     return this.host + this.modifier.route;
   }
-  getCities() {
+  getCities(): string {
     return this.host + this.modifier.cities;
   }
-  getPoints() {
+  getPoints(): string {
     return this.host + this.modifier.points;
   }
-  getGeoAdress(lat:number, lng:number) {
+  getGeoAdress(lat:number, lng:number): string {
     return this.host + this.modifier.geo + `/${lat}/${lng}`;
   }
-  deleteClaim(id:number) {
+  deleteClaim(id:number): string {
     return this.host + this.modifier.claim + `/${id}`;
   }
-  updateClaim(id:number) {
+  updateClaim(id:number): string {
     return this.host + this.modifier.claim + `/${id}`;
   }
-  updateTask(id:number) {
+  updateTask(id:number): string {
     return this.host + this.modifier.task + `/${id}`;
   }
 };
