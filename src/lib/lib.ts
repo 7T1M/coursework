@@ -78,6 +78,6 @@ class Lib extends Decorator {
   }
 }
 
-const lib = new Lib();
+const lib: Lib = new Lib();
 
 export default lib;

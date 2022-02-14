@@ -2,7 +2,7 @@ import axios from "axios";
 import httpConfig from "../configs/http";
 
 class AdminServices {
-  http = new httpConfig();
+  http: httpConfig = new httpConfig();
 
   login(login:string, password:string) {
     return axios.post(this.http.login(), {
@@ -395,6 +395,6 @@ class AdminServices {
   }
 }
 
-const adminServices = new AdminServices();
+const adminServices: AdminServices = new AdminServices();
 
 export default adminServices;
