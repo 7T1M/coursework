@@ -14,7 +14,7 @@ enum Statuses {
 }
 
 class Lib extends Decorator {
-  getCity(cityId: number, cities: ICity[]) {
+  getCity(cityId: number, cities: ICity[]): string {
     for (const item in cities) {
       if (cities[item].id === cityId) {
         return cities[item].name;
@@ -23,7 +23,7 @@ class Lib extends Decorator {
     return "Нет такого города";
   }
 
-  getPoint(pointId: number, points: IPoint[]) {
+  getPoint(pointId: number, points: IPoint[]): string {
     for (const item in points) {
       if (points[item].id === pointId) {
         return points[item].name;
@@ -31,7 +31,7 @@ class Lib extends Decorator {
     }
     return "Нет такой точки";
   }
-  getRoute(routeId: number, routes: IRoute[]) {
+  getRoute(routeId: number, routes: IRoute[]):string {
     for (const item in routes) {
       if (routes[item].id === routeId) {
         return routes[item].routeName;
@@ -39,7 +39,7 @@ class Lib extends Decorator {
     }
     return "Нет такого маршрута";
   }
-  getClaimType(claimTypeId: number, types: IClaimType[]) {
+  getClaimType(claimTypeId: number, types: IClaimType[]):string {
     for (const item in types) {
       if (types[item].id === claimTypeId) {
         return types[item].name;
@@ -47,7 +47,7 @@ class Lib extends Decorator {
     }
     return "Нет такой категории";
   }
-  getService(service: number, services: IService[]) {
+  getService(service: number, services: IService[]):string {
     for (const item in services) {
       if (services[item].id === service) {
         return services[item].name;
@@ -55,7 +55,7 @@ class Lib extends Decorator {
     }
     return "Нет такого органа";
   }
-  getStatus(statusId: number) {
+  getStatus(statusId: number):string {
     switch (statusId) {
       case Statuses.Decline:
         return "Отклонена";
@@ -73,7 +73,7 @@ class Lib extends Decorator {
         return "Выполнено";
         
       default:
-        return null;
+        return "Нет такого статуса";
     }
   }
 }

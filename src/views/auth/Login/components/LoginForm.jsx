@@ -3,17 +3,24 @@ import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import adminServices from "../../../../services/admin";
 import { setAuthToken } from "../../../../redux/appSlice";
 import { useDispatch } from "react-redux";
+import logger from "../../../../logger/objectLogger";
+import Logger from "../../../../logger/Logger";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
+  
 
   function onSubmit(values) {
-    adminServices
-      .login(values.email, values.password)
-      .then((res) => {
-        dispatch(setAuthToken(res.data.data.access_token));
-      })
-      .catch((err) => console.log(err));
+    // adminServices
+    //   .login(values.email, values.password)
+    //   .then((res) => {
+    //     dispatch(setAuthToken(res.data.data.access_token));
+        
+    //   })
+    //   .catch((err) => console.log(err));
+
+      const objectLogger = logger(values.email)
+      objectLogger.userLogin()
   }
   return (
     <Form layout="vertical" onFinish={onSubmit} name="login-form">

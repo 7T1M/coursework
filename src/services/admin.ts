@@ -1,24 +1,29 @@
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 import httpConfig from "../configs/http";
 
 class AdminServices {
-  http: httpConfig = new httpConfig();
+  private http: httpConfig
+  
+  constructor(){
+    this.http = new httpConfig();
+  }
+ 
 
-  login(login:string, password:string) {
+  login(login:string, password:string): AxiosPromise {
     return axios.post(this.http.login(), {
       login: login,
       password: password,
     });
   }
 
-  signUp(login:string, password:string) {
+  signUp(login:string, password:string): AxiosPromise {
     return axios.post(this.http.signUp(), {
       login: login,
       password: password,
     });
   }
 
-  addFileToStorage(token:string, file:any) {
+  addFileToStorage(token:string, file:any): AxiosPromise {
     return axios.post(
       this.http.addFileToStorage(),
       {
@@ -32,7 +37,7 @@ class AdminServices {
     );
   }
 
-  getServicesTypes(token:string) {
+  getServicesTypes(token:string): AxiosPromise {
     return axios.get(this.http.getServiceTypes(), {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -40,7 +45,7 @@ class AdminServices {
     });
   }
 
-  getServices(token:string) {
+  getServices(token:string): AxiosPromise {
     return axios.get(this.http.getServices(), {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +53,7 @@ class AdminServices {
     });
   }
 
-  getClaims(token:string) {
+  getClaims(token:string): AxiosPromise {
     return axios.get(this.http.getClaims(), {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -56,7 +61,7 @@ class AdminServices {
     });
   }
 
-  getClaimsTypes(token:string) {
+  getClaimsTypes(token:string): AxiosPromise {
     return axios.get(this.http.getClaimCategories(), {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -64,7 +69,7 @@ class AdminServices {
     });
   }
 
-  getTasks(token:string) {
+  getTasks(token:string): AxiosPromise {
     return axios.get(this.http.getTasks(), {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -72,7 +77,7 @@ class AdminServices {
     });
   }
 
-  getFileFromStorage(token:string, fileId:number) {
+  getFileFromStorage(token:string, fileId:number): AxiosPromise {
     return axios.get(this.http.getFile(fileId), {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -80,7 +85,7 @@ class AdminServices {
     });
   }
 
-  createServiceType(token:string, name:string) {
+  createServiceType(token:string, name:string): AxiosPromise {
     return axios.put(
       this.http.createServiceType(),
       {
@@ -94,7 +99,7 @@ class AdminServices {
     );
   }
 
-  createService(token:string, data:any) {
+  createService(token:string, data:any): AxiosPromise {
     return axios.put(
       this.http.createService(),
       {
@@ -114,7 +119,7 @@ class AdminServices {
     );
   }
 
-  createClaim(token:string, data:any) {
+  createClaim(token:string, data:any): AxiosPromise {
     return axios.put(
       this.http.createClaim(),
       {
@@ -131,7 +136,7 @@ class AdminServices {
     );
   }
 
-  createClaimType(token:string, data:any) {
+  createClaimType(token:string, data:any): AxiosPromise {
     return axios.put(
       this.http.createClaimsTypes(),
       {
@@ -149,14 +154,14 @@ class AdminServices {
       }
     );
   }
-  getNews(token:string) {
+  getNews(token:string): AxiosPromise {
     return axios.get(this.http.getNews(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  createNews(token:string, data:any) {
+  createNews(token:string, data:any): AxiosPromise {
     return axios.put(
       this.http.createNews(),
       {
@@ -174,7 +179,7 @@ class AdminServices {
     );
   }
 
-  updateNews(token:string, data:any) {
+  updateNews(token:string, data:any): AxiosPromise {
     return axios.post(
       this.http.updateNews(data.id),
       {
@@ -192,7 +197,7 @@ class AdminServices {
     );
   }
 
-  createDriver(token:string, data:any) {
+  createDriver(token:string, data:any): AxiosPromise {
     return axios.put(
       this.http.createDriver(),
       {
@@ -212,14 +217,14 @@ class AdminServices {
     );
   }
 
-  getDrivers(token:string) {
+  getDrivers(token:string): AxiosPromise {
     return axios.get(this.http.getDrivers(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  updateDriver(token:string, data:any) {
+  updateDriver(token:string, data:any): AxiosPromise {
     return axios.post(
       this.http.updateDriver(data.id),
       {
@@ -236,14 +241,14 @@ class AdminServices {
       }
     );
   }
-  getRoutes(token:string) {
+  getRoutes(token:string): AxiosPromise {
     return axios.get(this.http.getRoutes(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  updateRoute(token:string, data:any) {
+  updateRoute(token:string, data:any): AxiosPromise {
     return axios.post(
       this.http.updateRoute(data.id),
       {
@@ -260,56 +265,56 @@ class AdminServices {
       }
     );
   }
-  deleteRoute(token:string, id:number) {
+  deleteRoute(token:string, id:number): AxiosPromise {
     return axios.delete(this.http.deleteRoute(id), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  deleteDriver(token:string, id:number) {
+  deleteDriver(token:string, id:number): AxiosPromise {
     return axios.delete(this.http.deleteDriver(id), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  deleteNews(token:string, id:number) {
+  deleteNews(token:string, id:number): AxiosPromise {
     return axios.delete(this.http.deleteNews(id), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  getClaimCategories(token:string) {
+  getClaimCategories(token:string): AxiosPromise {
     return axios.get(this.http.getClaimCategories(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  deleteClaimCategory(token:string, id:number) {
+  deleteClaimCategory(token:string, id:number): AxiosPromise {
     return axios.delete(this.http.deleteClaimCategory(id), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  getUsers(token:string) {
+  getUsers(token:string): AxiosPromise {
     return axios.get(this.http.getUsers(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  deleteUser(token:string, id:number) {
+  deleteUser(token:string, id:number): AxiosPromise {
     return axios.delete(this.http.deleteUser(id), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  createRoute(token:string, data:any) {
+  createRoute(token:string, data:any): AxiosPromise {
     return axios.put(
       this.http.createRoute(),
       {
@@ -328,35 +333,35 @@ class AdminServices {
     );
   }
 
-  getCities(token:string) {
+  getCities(token:string): AxiosPromise {
     return axios.get(this.http.getCities(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  getPoints(token:string) {
+  getPoints(token:string): AxiosPromise {
     return axios.get(this.http.getPoints(), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  getGeoAdress(token:string, lat:number, lng:number) {
+  getGeoAdress(token:string, lat:number, lng:number): AxiosPromise {
     return axios.get(this.http.getGeoAdress(lat, lng), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  deleteClaim(token:string, id:number) {
+  deleteClaim(token:string, id:number): AxiosPromise {
     return axios.delete(this.http.deleteClaim(id), {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
-  updateClaim(token:string, data:any) {
+  updateClaim(token:string, data:any): AxiosPromise {
     return axios.post(
       this.http.updateClaim(data.id),
       {
@@ -374,7 +379,7 @@ class AdminServices {
       }
     );
   }
-  updateTask(token:string, data:any) {
+  updateTask(token:string, data:any): AxiosPromise {
     return axios.post(
       this.http.updateTask(data.id),
       {

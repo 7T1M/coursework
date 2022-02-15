@@ -1,130 +1,153 @@
+interface IInstance {
+  auth: string;
+  storage: string;
+  services: string;
+  claims: string;
+  service: string;
+  claim: string;
+  news: string;
+  task: string;
+  tasks: string;
+  drivers: string;
+  routes: string;
+  route: string;
+  driver: string;
+  users: string;
+  user: string;
+  cities: string;
+  points: string;
+  geo: string;
+}
 
-export default class httpConfig  {
-  host = "http://192.168.1.30:3000"
-  modifier = {
-    auth: "/auth",
-    storage: "/storage",
-    services: "/services",
-    claims: "/claims",
-    service: "/service",
-    claim: "/claim",
-    news: "/news",
-    task: "/task",
-    tasks: "/tasks",
-    drivers: "/drivers",
-    routes: "/routes",
-    route: "/route",
-    driver: "/driver",
-    users: "/users",
-    user: "/user",
-    cities: "/cities",
-    points: "/points",
-    geo: "./geo",
+export default class httpConfig {
+  private instance: IInstance;
+  constructor(private host = "http://192.168.1.30:3000") {
+    this.host = host;
+    this.instance = {
+      auth: "/auth",
+      storage: "/storage",
+      services: "/services",
+      claims: "/claims",
+      service: "/service",
+      claim: "/claim",
+      news: "/news",
+      task: "/task",
+      tasks: "/tasks",
+      drivers: "/drivers",
+      routes: "/routes",
+      route: "/route",
+      driver: "/driver",
+      users: "/users",
+      user: "/user",
+      cities: "/cities",
+      points: "/points",
+      geo: "./geo",
+    };
   }
-  login() {
-    return this.host + this.modifier.auth + "/signin";
+
+  login(): string {
+    return this.host + this.instance.auth + "/signin";
   }
-  signUp() {
-    return this.host + this.modifier.auth + "/signup";
+  signUp(): string {
+    return this.host + this.instance.auth + "/signup";
   }
-  addFileToStorage() {
-    return this.host + this.modifier.storage + "/load";
+  addFileToStorage(): string {
+    return this.host + this.instance.storage + "/load";
   }
-  getServiceTypes() {
-    return this.host + this.modifier.services + "/types";
+  getServiceTypes(): string {
+    return this.host + this.instance.services + "/types";
   }
-  getServices() {
-    return this.host + this.modifier.services;
+  getServices(): string {
+    return this.host + this.instance.services;
   }
-  getClaims() {
-    return this.host + this.modifier.claims;
+  getClaims(): string {
+    return this.host + this.instance.claims;
   }
-  getTasks() {
-    return this.host + this.modifier.tasks;
+  getTasks(): string {
+    return this.host + this.instance.tasks;
   }
-  getFile(fileId:number) {
-    return this.host + this.modifier.storage + "/" + fileId;
+  getFile(fileId: number): string {
+    return this.host + this.instance.storage + "/" + fileId;
   }
-  createServiceType() {
-    return this.host + this.modifier.service + "/types";
+  createServiceType(): string {
+    return this.host + this.instance.service + "/types";
   }
-  createService() {
-    return this.host + this.modifier.service;
+  createService(): string {
+    return this.host + this.instance.service;
   }
-  createClaim() {
-    return this.host + this.modifier.claim;
+  createClaim(): string {
+    return this.host + this.instance.claim;
   }
-  createClaimsTypes() {
-    return this.host + this.modifier.claim + "/type";
+  createClaimsTypes(): string {
+    return this.host + this.instance.claim + "/type";
   }
-  createDriver() {
-    return this.host + this.modifier.driver;
+  createDriver(): string {
+    return this.host + this.instance.driver;
   }
-  getNews() {
-    return this.host + this.modifier.news;
+  getNews(): string {
+    return this.host + this.instance.news;
   }
-  createNews() {
-    return this.host + this.modifier.news;
+  createNews(): string {
+    return this.host + this.instance.news;
   }
-  updateNews(id:number) {
-    return this.host + this.modifier.news + `/${id}`;
+  updateNews(id: number): string {
+    return this.host + this.instance.news + `/${id}`;
   }
-  getDrivers() {
-    return this.host + this.modifier.drivers;
+  getDrivers(): string {
+    return this.host + this.instance.drivers;
   }
-  updateDriver(id:number) {
-    return this.host + this.modifier.driver + `/${id}`;
+  updateDriver(id: number): string {
+    return this.host + this.instance.driver + `/${id}`;
   }
-  getRoutes() {
-    return this.host + this.modifier.routes;
+  getRoutes(): string {
+    return this.host + this.instance.routes;
   }
-  updateRoute(id:number) {
-    return this.host + this.modifier.route + `/${id}`;
+  updateRoute(id: number): string {
+    return this.host + this.instance.route + `/${id}`;
   }
-  deleteRoute(id:number) {
-    return this.host + this.modifier.route + `/${id}`;
+  deleteRoute(id: number): string {
+    return this.host + this.instance.route + `/${id}`;
   }
-  deleteDriver(id:number) {
-    return this.host + this.modifier.driver + `/${id}`;
+  deleteDriver(id: number): string {
+    return this.host + this.instance.driver + `/${id}`;
   }
-  deleteNews(id:number) {
-    return this.host + this.modifier.news + `/${id}`;
+  deleteNews(id: number): string {
+    return this.host + this.instance.news + `/${id}`;
   }
-  getClaimCategories() {
-    return this.host + this.modifier.claims + "/types";
+  getClaimCategories(): string {
+    return this.host + this.instance.claims + "/types";
   }
   // updateClaimCategory(tokendata){
   //   return this.host + this.modifier.claim +
   // }
-  deleteClaimCategory(id:number) {
-    return this.host + this.modifier.claim + `/type/${id}`;
+  deleteClaimCategory(id: number): string {
+    return this.host + this.instance.claim + `/type/${id}`;
   }
-  getUsers() {
-    return this.host + this.modifier.users;
+  getUsers(): string {
+    return this.host + this.instance.users;
   }
-  deleteUser(id:number) {
-    return this.host + this.modifier.user + `/${id}`;
+  deleteUser(id: number): string {
+    return this.host + this.instance.user + `/${id}`;
   }
-  createRoute() {
-    return this.host + this.modifier.route;
+  createRoute(): string {
+    return this.host + this.instance.route;
   }
-  getCities() {
-    return this.host + this.modifier.cities;
+  getCities(): string {
+    return this.host + this.instance.cities;
   }
-  getPoints() {
-    return this.host + this.modifier.points;
+  getPoints(): string {
+    return this.host + this.instance.points;
   }
-  getGeoAdress(lat:number, lng:number) {
-    return this.host + this.modifier.geo + `/${lat}/${lng}`;
+  getGeoAdress(lat: number, lng: number): string {
+    return this.host + this.instance.geo + `/${lat}/${lng}`;
   }
-  deleteClaim(id:number) {
-    return this.host + this.modifier.claim + `/${id}`;
+  deleteClaim(id: number): string {
+    return this.host + this.instance.claim + `/${id}`;
   }
-  updateClaim(id:number) {
-    return this.host + this.modifier.claim + `/${id}`;
+  updateClaim(id: number): string {
+    return this.host + this.instance.claim + `/${id}`;
   }
-  updateTask(id:number) {
-    return this.host + this.modifier.task + `/${id}`;
+  updateTask(id: number): string {
+    return this.host + this.instance.task + `/${id}`;
   }
-};
-
+}

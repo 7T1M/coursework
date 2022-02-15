@@ -14,6 +14,7 @@ import {
   setClaimTypes,
   setServices,
 } from "../redux/appSlice";
+import logger from "../logger/Logger";
 const { Content } = Layout;
 
 export default function AppLayout() {
@@ -22,7 +23,6 @@ export default function AppLayout() {
   const auth = useSelector((state) => state.app.authToken);
   const padding = collapsed ? "80px" : "250px";
 
-  console.log(useSelector((state) => state.app));
   useEffect(() => {
     adminServices.getCities(auth).then((res) => {
       dispatch(setCities(res.data.data));
