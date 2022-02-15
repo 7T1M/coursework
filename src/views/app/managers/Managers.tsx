@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { IService } from "../../../shared-interfaces/IService";
+import Logger from "../../../logger/Logger";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -32,8 +33,11 @@ export default function Managers() {
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const logger: Logger = useSelector((state: any) => state.app.logger);
   useEffect(() => {
     dispatch(selectRoute("managers"));
+    logger.userChangePage("managers");
+
     getServices();
   }, []);
 
@@ -61,16 +65,14 @@ export default function Managers() {
     setIsDataLoading(true);
     adminServices
       .getServices(auth)
-      .then((res:any) => {
-        console.log(res);
+      .then((res: any) => {
         setManagers(res.data.data);
         setIsDataLoading(false);
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
 
   function onFinish(values: IService) {
-    console.log(values);
     adminServices
       .createService(auth, values)
       .finally(() => {
@@ -78,7 +80,7 @@ export default function Managers() {
         setIsCreateModalVisible(false);
         form.resetFields();
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
 
   return (
@@ -155,10 +157,7 @@ export default function Managers() {
         <Row>
           <Col span={24}>
             <Card>
-              <ManagersTable
-                data={managers}
-                isDataLoading={isDataLoading}
-              />
+              <ManagersTable data={managers} isDataLoading={isDataLoading} />
             </Card>
           </Col>
         </Row>

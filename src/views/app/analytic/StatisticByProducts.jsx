@@ -14,16 +14,7 @@ const StatisticByProducts = () => {
     percentC: 5,
   };
 
-  /*
-    docRef.get().then(function (doc) {
-        if (doc.exists) {
-            if (doc.data().checkNow) {
 
-            }
-            console.log(store.getState().analytic)
-        }
-    });
-    */
 
   return (
     <Row gutter={16}>

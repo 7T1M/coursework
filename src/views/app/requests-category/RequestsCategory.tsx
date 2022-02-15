@@ -23,8 +23,6 @@ import { IClaimType } from "../../../shared-interfaces/IClaimType";
 const { Title } = Typography;
 const { Option } = Select;
 
-
-
 export default function RequestsCategory() {
   const [form] = Form.useForm();
   const auth = useSelector((state: any) => state.app.authToken);
@@ -33,10 +31,13 @@ export default function RequestsCategory() {
   const [isCreateClaimModalVisible, setIsCreateClaimModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
+  const logger = useSelector((state: any) => state.app.logger);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(selectRoute("requests-categories"));
+    logger.userChangePage("requests-categories");
+
     getCategories();
   }, []);
   useEffect(() => {
@@ -60,24 +61,24 @@ export default function RequestsCategory() {
   }
   function getCategories() {
     setIsDataLoading(true);
-    adminServices.getClaimCategories(auth).then((res:any) => {
-      console.log(res);
+    adminServices.getClaimCategories(auth).then((res: any) => {
+     ;
       setIsDataUpdated(false);
       setCategories(res.data.data);
       setIsDataLoading(false);
       setClaimTypes(res.data.data);
     });
   }
-  function createClaimType(data:IClaimType) {
+  function createClaimType(data: IClaimType) {
     adminServices
       .createClaimType(auth, data)
-      .then((res:any) => {
-        console.log(res);
+      .then((res: any) => {
+       ;
         setIsDataUpdated(true);
         setIsCreateClaimModalVisible(false);
         form.resetFields();
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
   function priorityTag(priority: number) {
     if (priority <= 3) {
@@ -88,7 +89,7 @@ export default function RequestsCategory() {
       return <Tag color={"red"}>Высокий</Tag>;
     }
   }
-  function onFinish(values:IClaimType) {
+  function onFinish(values: IClaimType) {
     values.priority = parseInt(values.priority);
     createClaimType(values);
   }

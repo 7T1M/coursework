@@ -22,20 +22,19 @@ const gradient = [
   "rgba(255, 0, 0, 1)",
 ];
 
-
-  
-
 function MapPage(props) {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.app.authToken);
-
+  const logger = useSelector((state) => state.app.logger);
   const [coordinates, setCoordinates] = useState([]);
   useEffect(() => {
     dispatch(selectRoute("heatmap"));
+    logger.userChangePage("heatmap");
+
     getClaims();
   }, []);
   function getClaims() {
-    adminServices.getClaims(auth).then((res:any) => {
+    adminServices.getClaims(auth).then((res) => {
       getCoordinates(res.data.data);
     });
   }
@@ -47,7 +46,6 @@ function MapPage(props) {
     }
     setCoordinates(tempData);
   }
-  console.log(coordinates);
   return (
     <div>
       {coordinates.length ? (

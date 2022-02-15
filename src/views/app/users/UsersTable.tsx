@@ -35,10 +35,10 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
       adminServices
         .deleteUser(auth, id)
         .then((res: any) => {
-          console.log(res);
+         ;
           setIsDataUpdated(true);
         })
-        .catch((err: any) => console.log(err));
+        .catch((err: any) => console.error(err));
     },
     onCancel() {},
   });
@@ -178,7 +178,6 @@ const UsersTable: React.FC<IUserTableProps> = (_props) => {
     }
   }
   function onFinish(values: iUser) {
-    console.log(values);
     setIsEditModaleVisible(false);
   }
 

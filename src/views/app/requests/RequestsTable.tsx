@@ -37,12 +37,11 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
     centered: true,
     onOk() {
       adminServices.deleteClaim(auth, id).then((res:any) => {
-        console.log(res);
+       ;
         setIsDataUpdated(true);
       });
     },
     onCancel() {
-      console.log("Cancel");
     },
   });
 }
@@ -70,7 +69,6 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
     },
     onChange(info:any) {
       if (info.file.status !== "uploading") {
-        console.log(info.file.response.data.url);
         setImgUrl(info.file.response.data.url);
       }
       if (info.file.status === "done") {
@@ -194,7 +192,7 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
     values.id = choosenRecord?.id!;
     values.urlPreview = `http://localhost:3000${imgUrl}`;
     adminServices.updateClaim(_props.auth, values).then((res:any) => {
-      console.log(res);
+     ;
       _props.setIsDataUpdated(true);
       setIsEditModaleVisible(false);
       form.resetFields();

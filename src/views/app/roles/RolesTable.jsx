@@ -13,10 +13,8 @@ import roles from "./data";
 //     cancelText: "Нет",
 //     centered: "yes",
 //     onOk() {
-//       console.log("OK");
 //     },
 //     onCancel() {
-//       console.log("Cancel");
 //     },
 //   });
 // }

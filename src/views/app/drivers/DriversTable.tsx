@@ -35,10 +35,10 @@ function showDeleteConfirm(id: number, updateData: any, auth: string) {
       adminServices
         .deleteDriver(auth, id)
         .then((res:any) => {
-          console.log(res);
+        
           updateData(true);
         })
-        .catch((err:any) => console.log(err));
+        .catch((err:any) => console.error(err));
     },
     onCancel() {},
   });
@@ -145,7 +145,7 @@ const DriversTable: React.FC<IDriversTableProps> = ({
         setIsEditModaleVisible(false);
         form.resetFields();
       })
-      .catch((err:any) => console.log(err));
+      .catch((err:any) => console.error(err));
 
     // adminServices.
   }

@@ -1,22 +1,11 @@
 import React, { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
-import {
-  Row,
-  Col,
-  Input,
-  Card,
-  Select,
-  Typography,
-  Upload,
-  Button,
-} from "antd";
-import { UploadOutlined, CloudDownloadOutlined } from "@ant-design/icons";
+import { Row, Col, Input, Card, Select, Typography } from "antd";
 import RequestsTable from "./RequestsTable";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
-import { ExcelRenderer } from "react-excel-renderer";
 import adminServices from "../../../services/admin";
 
 import tasks from "./data";
@@ -29,10 +18,12 @@ export default function Requests() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.app.authToken);
-
+  const logger = useSelector((state) => state.app.logger);
 
   useEffect(() => {
     dispatch(selectRoute("claims"));
+    logger.userChangePage("claims");
+
     getClaims();
   }, []);
   const [updateTime, setUpdateTime] = useState(
@@ -50,8 +41,7 @@ export default function Requests() {
   }
   function getClaims() {
     setIsLoading(true);
-    adminServices.getClaims(auth).then((res:any) => {
-      console.log(res);
+    adminServices.getClaims(auth).then((res) => {
       setClaims(res.data.data);
       setIsLoading(false);
       setIsDataUpdated(false);
@@ -63,38 +53,6 @@ export default function Requests() {
     } else return;
   }, [isDataUpdated]);
 
-  // function fileHandler(event) {
-  //   let fileObj = event.target.files[0];
-  //   console.log(fileObj);
-  //   //just pass the fileObj as parameter
-  //   ExcelRenderer(fileObj, (err, resp) => {
-  //     if (err:any) {
-  //       console.log(err);
-  //     } else {
-        
-  //       const tempData = [];
-  //       for (let i = 1; i < resp.rows.length; i++) {
-  //         adminServices
-  //           .createClaim(auth, {
-  //             claimType: resp.rows[i][0],
-  //             description: resp.rows[i][1],
-  //             address: resp.rows[i][2],
-
-  //             title: resp.rows[i][3],
-  //           })
-  //           .then((res:any) => {
-  //             console.log(res);
-  //             setIsDataUpdated(true);
-  //           })
-  //           .catch((err:any) => console.log(err));
-  //       }
-  //       //setTasksData(tasksData.concat(tempData));
-  //     }
-  //     document.getElementById("file").value = "";
-      
-  //   });
-  // }
-  
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={24} lg={24}>
@@ -142,24 +100,6 @@ export default function Requests() {
                     </Col>
                   </Row>
                 </Col>
-                {/* <Col>
-                  <Row justify={"center"}>
-                    <Col className="mt-1">
-                      <input
-                      
-                        type="file"
-                        name="file"
-                        id="file"
-                        class="inputfile"
-                        onChange={(e) => fileHandler(e)}
-                        hidden
-                      />
-                      <Button type="primary">
-                        <label for="file">Excel</label>
-                      </Button>
-                    </Col>
-                  </Row>
-                </Col>{" "} */}
               </Row>
             </Card>
           </Col>

@@ -37,11 +37,11 @@ function App() {
       <Routes>
         <Route
           path="/app/*"
-          element={<PrivateRoute component={AppLayout} auth={true} />}
+          element={<PrivateRoute component={AppLayout} auth={auth !== ""} />}
         />
         <Route
           path="/*"
-          element={<AuthRoute component={AuthRoutes} auth={true} />}
+          element={<AuthRoute component={AuthRoutes} auth={auth !== ""} />}
         />
 
         <Route element={<h1>Page not found</h1>} path="*" />

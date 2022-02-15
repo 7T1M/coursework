@@ -115,7 +115,6 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
 
   function onFinish(values:ITask) {
     values.id = choosenRecord?.id!;
-    console.log(values);
     adminServices.updateTask(auth, values).then((res:any) => {
       _props.setIsDataUpdated(true);
       setIsEditModaleVisible(false);

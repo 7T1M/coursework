@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
-import {
-  Row,
-  Col,
-  Input,
-  Card,
-  Select,
-  Typography,
-} from "antd";
+import { Row, Col, Input, Card, Select, Typography } from "antd";
 import TasksTable from "./TasksTable";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,10 +15,14 @@ export default function Tasks() {
   const [tasksData, setTasksData] = useState<Array<ITask>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const auth = useSelector((state:any) => state.app.authToken);
+  const auth = useSelector((state: any) => state.app.authToken);
   const dispatch = useDispatch();
+  const logger = useSelector((state: any) => state.app.logger);
+
   useEffect(() => {
     dispatch(selectRoute("tasks"));
+    logger.userChangePage("tasks");
+
     getTasks();
   }, []);
   const [updateTime, setUpdateTime] = useState<string>(
@@ -50,8 +47,8 @@ export default function Tasks() {
 
   function getTasks() {
     setIsLoading(true);
-    adminServices.getTasks(auth).then((res:any) => {
-      console.log(res);
+    adminServices.getTasks(auth).then((res: any) => {
+     ;
       setTasksData(res.data.data);
       setIsLoading(false);
       setIsDataUpdated(false);

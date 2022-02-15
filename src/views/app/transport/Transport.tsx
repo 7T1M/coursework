@@ -36,6 +36,8 @@ export default function Transport() {
 
   useEffect(() => {
     dispatch(selectRoute("transport"));
+    reduxData.logger.userChangePage("transport");
+
     getRoutes();
   }, []);
   useEffect(() => {
@@ -62,23 +64,23 @@ export default function Transport() {
     adminServices
       .getRoutes(auth)
       .then((res:any) => {
-        console.log(res);
+       ;
         setLocalRoutes(res.data.data);
         setIsDataUpdated(false);
         setIsDataLoading(false);
         setRoutes(res.data.data);
       })
-      .catch((err:any) => console.log(err));
+      .catch((err:any) => console.error(err));
   }
   function onFinish(values: IRoute) {
     adminServices
       .createRoute(auth, values)
       .then((res:any) => {
         setIsDataUpdated(true);
-        console.log(res);
+       ;
         setIsCreateModalVisible(false);
       })
-      .catch((err:any) => console.log(err))
+      .catch((err:any) => console.error(err))
       .finally(() => form.resetFields());
   }
   return (

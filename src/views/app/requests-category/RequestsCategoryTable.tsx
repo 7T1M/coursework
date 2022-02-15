@@ -23,10 +23,10 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
       adminServices
         .deleteClaimCategory(auth, id)
         .then((res:any) => {
-          console.log(res);
+         ;
           setIsDataUpdated(true);
         })
-        .catch((err:any) => console.log(err));
+        .catch((err:any) => console.error(err));
     },
     onCancel() {},
   });

@@ -1,26 +1,26 @@
 import { Button, Form, Input } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import adminServices from "../../../../services/admin";
-import { setAuthToken } from "../../../../redux/appSlice";
+import { setAuthToken, setUserName } from "../../../../redux/appSlice";
 import { useDispatch } from "react-redux";
-import logger from "../../../../logger/objectLogger";
+import { setLogger } from "../../../../redux/appSlice";
 import Logger from "../../../../logger/Logger";
-
+import { useNavigate } from "react-router-dom";
 export default function LoginForm() {
   const dispatch = useDispatch();
-  
-
+  const navigate = useNavigate();
   function onSubmit(values) {
-    // adminServices
-    //   .login(values.email, values.password)
-    //   .then((res) => {
-    //     dispatch(setAuthToken(res.data.data.access_token));
-        
-    //   })
-    //   .catch((err) => console.log(err));
-
-      const objectLogger = logger(values.email)
-      objectLogger.userLogin()
+    adminServices
+      .login(values.email, values.password)
+      .then((res) => {
+        dispatch(setAuthToken(res.data.data.access_token));
+        dispatch(setUserName(values.email));
+        const logger = new Logger(values.email);
+        logger.userLogin();
+        dispatch(setLogger(logger));
+        navigate("/app/analytic");
+      })
+      .catch((err) => console.error(err));
   }
   return (
     <Form layout="vertical" onFinish={onSubmit} name="login-form">

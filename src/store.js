@@ -21,6 +21,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
 import appSlice from "./redux/appSlice";
 import sideNavSlice from "./redux/sideNavSlice";
+import Logger from "./logger/Logger";
 const persistConfig = {
   key: "root",
   version: 2,
@@ -39,8 +40,6 @@ export default configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false
     }),
 });

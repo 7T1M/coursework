@@ -12,7 +12,7 @@ export default function SignUpForm() {
 
   function onSubmit(values) {
   //  adminServices.signUp(values.email,values.password).then((res:any)=> {
-  //    console.log(res)
+  //   
      
   //  })
   }

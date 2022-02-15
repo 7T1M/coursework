@@ -34,13 +34,12 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
       adminServices
         .deleteRoute(auth, id)
         .then((res:any) => {
-          console.log(res);
+         ;
           setIsDataUpdated(true);
         })
-        .catch((err:any) => console.log(err));
+        .catch((err:any) => console.error(err));
     },
     onCancel() {
-      console.log("Cancel");
     },
   });
 }
@@ -155,7 +154,7 @@ const TransportTable: React.FC<ITransportTableProps> = ({
         setIsDataUpdated(true);
         form.resetFields();
       })
-      .catch((err:any) => console.log(err));
+      .catch((err:any) => console.error(err));
   }
 
   return (

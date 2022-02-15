@@ -9,6 +9,9 @@ export const counterSlice = createSlice({
     routes: [],
     claimTypes: [],
     services: [],
+    userName: "",
+    logText: "",
+    logger: "",
   },
   reducers: {
     setAuthToken: (s, action) => {
@@ -29,6 +32,15 @@ export const counterSlice = createSlice({
     setServices: (s, action) => {
       s.services = action.payload;
     },
+    setUserName: (s, action) => {
+      s.userName = action.payload;
+    },
+    setLogText: (s, action) => {
+      s.logText = action.payload;
+    },
+    setLogger: (s, action) => {
+      s.logger = action.payload;
+    },
   },
 });
 
@@ -40,6 +52,9 @@ export const {
   setRoutes,
   setClaimTypes,
   setServices,
+  setUserName,
+  setLogText,
+  setLogger
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

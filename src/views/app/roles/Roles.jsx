@@ -3,7 +3,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Row, Col, Input, Card, Select, Typography } from "antd";
 import RolesTable from "./RolesTable";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 
@@ -12,8 +12,12 @@ const { Option } = Select;
 
 export default function Roles() {
   const dispatch = useDispatch();
+  const logger = useSelector((state) => state.app.logger);
+
   useEffect(() => {
     dispatch(selectRoute("roles"));
+    logger.userChangePage("roles");
+
   });
   const [updateTime, setUpdateTime] = useState(
     `Обновлено ${moment().format(

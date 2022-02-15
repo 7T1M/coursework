@@ -35,10 +35,11 @@ export default function Drivers() {
 
   useEffect(() => {
     dispatch(selectRoute("drivers"));
+    reduxData.logger.userChangePage("drivers");
+
     getDrivers();
   }, []);
   useEffect(() => {
-    console.log(updateData);
     if (updateData) {
       getDrivers();
       setUpdateData(false);
@@ -61,19 +62,18 @@ export default function Drivers() {
     setIsDataLoading(true);
     adminServices
       .getDrivers(auth)
-      .then((res:any) => {
+      .then((res: any) => {
         const data: Array<IDriver> = res.data.data;
-        console.log(data);
+       
         setDrivers(data);
         dateUpdateData();
         setIsDataLoading(false);
-        console.log(drivers);
+       
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
 
   function onFinish(values: IDriver) {
-    console.log(values);
     adminServices
       .createDriver(auth, values)
       .finally(() => {
@@ -81,7 +81,7 @@ export default function Drivers() {
         setIsCreateModalVisible(false);
         form.resetFields();
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
 
   return (

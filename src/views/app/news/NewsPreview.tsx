@@ -52,13 +52,12 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
       .finally(() => {
         _props.setIsDataUpdated(true);
       })
-      .catch((err:any) => console.log(err));
+      .catch((err:any) => console.error(err));
   }
 
   function onFinish(values: IEditNewsData) {
     values.id = _props.id;
     values.previewImageUrl = imgUrl === "" ? undefined : imgUrl;
-    console.log(values);
     adminServices
       .updateNews(auth, values)
       .finally(() => {
@@ -66,7 +65,7 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
         setIsEditModalVisible(false);
         form.resetFields();
       })
-      .catch((err:any) => console.log(err));
+      .catch((err:any) => console.error(err));
   }
   const uploadProps = {
     name: "file",
@@ -77,7 +76,6 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
     },
     onChange(info: any) {
       if (info.file.status !== "uploading") {
-        console.log(info.file.response.data.url);
         setImgUrl(`http://localhost:3000${info.file.response.data.url}`);
       }
     },

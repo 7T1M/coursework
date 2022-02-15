@@ -113,21 +113,12 @@ const ManagersTable: React.FC<IManagersTableProps> = ({
     }
   }
 
-  function onFinish(values: IService) {
-    console.log(values);
-  }
 
   return (
     <Row>
       <Col span={24}>
         <Table
           columns={columns}
-          //   pagination={{
-          //     position: ["bottomRight"],
-          //     pageSize: 250,
-          //     showSizeChanger: false,
-          //     total: count,
-          //   }}
           dataSource={data}
           scroll={{ x: 1000 }}
           loading={isDataLoading}
@@ -203,14 +194,14 @@ const ManagersTable: React.FC<IManagersTableProps> = ({
           </Col>
         </Row>
       </Modal>
-      <Modal
+      {/* <Modal
         visible={isEditModalVisible}
         onCancel={() => setIsEditModalVisible(false)}
         footer={null}
         width={800}
         title={`Редактирование органа №${choosenRecord?.id} `}
       >
-        <Form onFinish={onFinish}>
+        <Form >
           <Row>
             <Col span={24}>
               <Row justify="space-between">
@@ -269,7 +260,7 @@ const ManagersTable: React.FC<IManagersTableProps> = ({
             </Col>
           </Row>
         </Form>
-      </Modal>
+      </Modal> */}
     </Row>
   );
 };

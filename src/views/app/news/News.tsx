@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
-import {NewsPreview} from "./NewsPreview";
+import { NewsPreview } from "./NewsPreview";
 import { INews } from "./INews";
 
 const { Title } = Typography;
@@ -42,7 +42,6 @@ export default function News() {
     },
     onChange(info: any) {
       if (info.file.status !== "uploading") {
-        console.log(info.file.response.data.url);
         setImgUrl(`http://localhost:3000${info.file.response.data.url}`);
       }
       if (info.file.status === "done") {
@@ -57,6 +56,8 @@ export default function News() {
   const FormItem = Form.Item;
   useEffect(() => {
     dispatch(selectRoute("news"));
+    reduxData.logger.userChangePage("news");
+
     setIsListLoading(true);
     getNews();
   }, []);
@@ -85,30 +86,28 @@ export default function News() {
 
     adminServices
       .createNews(auth, values)
-      .then((res:any) => {
-        console.log(res);
+      .then((res: any) => {
         setIsDataUpdated(true);
         setIsModaleVisible(false);
         setIsListLoading(false);
         form.resetFields();
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
   function getNews() {
     setIsListLoading(true);
     adminServices
       .getNews(auth)
-      .then((res:any) => {
+      .then((res: any) => {
         setLoadedNews(res.data.data);
         setIsDataUpdated(false);
-        console.log(res);
+       ;
         setIsListLoading(false);
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
 
   function renderNews(news: INews) {
-    
     return (
       <Col
         style={{ marginTop: "10px", height: "100%" }}
@@ -126,8 +125,6 @@ export default function News() {
       </Col>
     );
   }
-
-
 
   return (
     <Row gutter={16}>
@@ -185,7 +182,7 @@ export default function News() {
             grid={{ md: 1, lg: 2, xl: 2, xxl: 2 }}
             dataSource={loadedNews}
             renderItem={(item) => renderNews(item)}
-            loading={isListLoading === true }
+            loading={isListLoading === true}
           ></List>
         </Col>
 
@@ -235,9 +232,9 @@ export default function News() {
                       ]}
                     >
                       <Select style={{ width: "100%" }} placeholder="Город">
-                         {reduxData.cities?.map((item:any) => (
+                        {reduxData.cities?.map((item: any) => (
                           <Option value={item.id}>{item.name}</Option>
-                        ))} 
+                        ))}
                       </Select>
                     </FormItem>
                   </Col>

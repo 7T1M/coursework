@@ -9,19 +9,24 @@ import { Layout, Row, Col, Button } from "antd";
 import dpr from "../assets/img/ur-dpr75.png";
 import { setAuthToken } from "../redux/appSlice";
 import { useNavigate } from "react-router-dom";
+import Logger from "../logger/Logger";
 const { Header } = Layout;
 export default function HeaderNav() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const collapsed = useSelector((state) => state.sideNav.collapsed);
-
+  const collapsed = useSelector((state: any) => state.sideNav.collapsed);
+  const logger: Logger = useSelector((state: any) => state.app.logger);
   function OnCollapse() {
     if (collapsed) dispatch(setCollapsed(false));
     else dispatch(setCollapsed(true));
   }
   function logout() {
+    logger.userLogout();
     dispatch(setAuthToken(""));
     navigate("/");
+  }
+  function downloadLog() {
+    logger.downloadLog();
   }
   return (
     <Header className="bg-white app-header dark">
@@ -43,6 +48,9 @@ export default function HeaderNav() {
         </div>
         <div className="nav-right">
           <div style={{ display: "flex", marginRight: 20 }}>
+            <Button className="mr-5" onClick={downloadLog} type="primary">
+              Скачать Лог Пользователя
+            </Button>
             <Button type="primary" onClick={logout} icon={<UserOutlined />}>
               Выйти
             </Button>

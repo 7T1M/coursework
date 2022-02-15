@@ -47,7 +47,7 @@ const ChartWidget = ({
   loading,
 }) => {
   let options = getChartTypeDefaultOption(type);
-  
+
   const isMobile = window.innerWidth < 768;
   const setLegendOffset = () => {
     if (chartRef.current) {
@@ -86,7 +86,6 @@ const ChartWidget = ({
   if (customOptions) {
     options = { ...options, ...customOptions };
   }
-  console.log(options)
 
   const renderChart = (
     <ReactResizeDetector onResize={onResize()}>

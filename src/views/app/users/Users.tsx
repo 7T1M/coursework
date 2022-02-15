@@ -20,9 +20,12 @@ export default function Users() {
   const [users, setUsers] = useState([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  
+  const logger = useSelector((state: any) => state.app.logger);
+
   useEffect(() => {
     dispatch(selectRoute("users"));
+    logger.userChangePage("users");
+
     getUsers();
   }, []);
   useEffect(() => {
@@ -45,17 +48,17 @@ export default function Users() {
       )} в ${moment().hours()}:${moment().minute()}`
     );
   }
-  
+
   function getUsers() {
     setIsDataLoading(true);
     adminServices
       .getUsers(auth)
-      .then((res:any) => {
+      .then((res: any) => {
         setUsers(res.data.data);
         setIsDataUpdated(false);
         setIsDataLoading(false);
       })
-      .catch((err:any) => console.log(err));
+      .catch((err: any) => console.error(err));
   }
 
   return (
@@ -117,7 +120,10 @@ export default function Users() {
                       title="Активность пользователей за неделю"
                       height={250}
                       type="bar"
-                      customOptions={{ colors: "#3e82f7" }} extra={undefined} loading={undefined}                    />
+                      customOptions={{ colors: "#3e82f7" }}
+                      extra={undefined}
+                      loading={undefined}
+                    />
                   </Col>
                 </Row>
               </Col>

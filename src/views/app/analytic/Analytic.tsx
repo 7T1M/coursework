@@ -5,19 +5,20 @@ import RightInfoWidget from "./RightInfoWidget";
 import StatisticByProducts from "./StatisticByProducts";
 import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
+import Logger from "../../../logger/Logger";
 const { Title } = Typography;
 const { Option } = Select;
 
-
-
 export default function Analytic() {
   const dispatch = useDispatch();
+  const logger: Logger = useSelector((state: any) => state.app.logger);
   useEffect(() => {
     dispatch(selectRoute("analytic"));
-  },[]);
+    logger.userChangePage("analytic");
+  }, []);
   const [updateTime, setUpdateTime] = useState<string>(
     `Обновлено ${moment().format(
       "DD MMMM YYYY"
@@ -30,7 +31,6 @@ export default function Analytic() {
       )} в ${moment().hours()}:${moment().minute()}`
     );
   }
- 
 
   return (
     <Row gutter={16}>
@@ -73,36 +73,7 @@ export default function Analytic() {
           <RightInfoWidget />
         </Row>
         <StatisticByProducts />
-        <Row style={{ marginTop: 24 }}>
-          <Col span={24}>
-            <Card>
-              <Row justify={"space-between"}>
-                <Col span={12}>
-                  <Input
-                    placeholder="Поиск по заявкам..."
-                    prefix={<SearchOutlined className="site-form-item-icon" />}
-                  />
-                </Col>
-                <Col span={7}>
-                  <Row justify={"center"}>
-                    <Col style={{ width: "100%" }}>
-                      <Select style={{ width: "100%" }} defaultValue={250}>
-                        <Option value={250}>Показывать по 250шт.</Option>
-                        <Option value={500}>Показывать по 500шт.</Option>
-                        <Option value={1000}>Показывать по 1000шт.</Option>
-                      </Select>
-                    </Col>
-                  </Row>
-                </Col>
-               
-              </Row>
-            </Card>
-          </Col>
-        </Row>
-        
       </Col>
     </Row>
-  
   );
 }
-
