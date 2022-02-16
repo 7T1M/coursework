@@ -11,16 +11,17 @@ import ChartWidget from "../../../components";
 import { weeklyActiveData } from "./chartData";
 import adminServices from "../../../services/admin";
 import { AppDispatch, RootState } from "../../../store";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function Users() {
-  const dispatch: AppDispatch = useDispatch();
-  const auth = useSelector((state: RootState) => state.app.authToken);
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector((state) => state.app.authToken);
   const [users, setUsers] = useState([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const logger = useSelector((state: RootState) => state.app.logger!);
+  const logger = useAppSelector((state) => state.app.logger!);
 
   useEffect(() => {
     dispatch(selectRoute("users"));
@@ -85,14 +86,6 @@ export default function Users() {
               <span>Полная информация о пользователях</span>
             </Row>
           </Col>
-          {/* <Col span={4}>
-            <img
-              width={297}
-              height={140}
-              src={"/img/products-logo.png"}
-              alt="product"
-            ></img>
-          </Col> */}
         </Row>
         <Card>
           <Col span={24}>

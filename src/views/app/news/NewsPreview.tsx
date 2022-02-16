@@ -20,6 +20,8 @@ import adminServices from "../../../services/admin";
 import { INews } from "./INews";
 import { IEditNewsData } from "./IEditNewsData";
 import { RootState } from "../../../store";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+
 const { Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
@@ -37,8 +39,8 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
   const [isInfoModalVisible, setIsInfoModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
-  const auth = useSelector((state: RootState) => state.app.authToken);
-  const reduxData = useSelector((state: RootState) => state.app);
+  const auth = useAppSelector((state) => state.app.authToken);
+  const reduxData = useAppSelector((state) => state.app);
   const [form] = Form.useForm();
   let text: string = "";
   if (_props.description) {

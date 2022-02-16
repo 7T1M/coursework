@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
  import lib from "../../../lib/lib"
 import { IDriver } from "../../../shared-interfaces/IDriver";
 import { RootState } from "../../../store";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+
 import React from "react";
 const { Option } = Select;
 const { Title } = Typography;
@@ -60,7 +62,7 @@ const DriversTable: React.FC<IDriversTableProps> = ({
   const [isProfileModaleVisible, setIsProfileModaleVisible] = useState(false);
   const [isEditModaleVisible, setIsEditModaleVisible] = useState(false);
   const [choosenRecord, setChoosenRecord] = useState<IDriver>();
-  const reduxData = useSelector((state: RootState) => state.app);
+  const reduxData = useAppSelector((state) => state.app);
   const [form] = Form.useForm();
 
 

@@ -1,11 +1,21 @@
 import { Card, Checkbox, Col, Row } from "antd";
 import moment from "moment";
 import ChartWidget from "../../../components";
-import { data } from "./data";
+import { claims } from "./data";
 import "moment/locale/ru";
 import { get as getDashboardChartOptions } from "./AnalyticDashboardOptions";
 
-const ChartWidgetWidthControl = (props) => {
+const ChartWidgetWidthControl = () => {
+
+  function getChartData(): Array<any>{
+    let data:Array<any> = [];
+    
+    data = claims.filter(v => v.name === "Высокой")
+    
+    return data
+  }
+  
+
   moment.locale("ru");
   const checkboxDiv = {
     border: "1px solid #EDF2F9",
@@ -47,9 +57,8 @@ const ChartWidgetWidthControl = (props) => {
       </Card>
       <ChartWidget
         customOptions={getDashboardChartOptions()}
-        series={data.soldon}
-        height={400}
-      />
+        series={getChartData()}
+        height={400} extra={undefined} loading={undefined}      />
     </Col>
   );
 };

@@ -24,6 +24,8 @@ import TextArea from "antd/lib/input/TextArea";
 import { ITask } from "../../../shared-interfaces/ITask";
 import { IService } from "../../../shared-interfaces/IService";
 import { RootState } from "../../../store";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+
 
 const { Option } = Select;
 
@@ -39,7 +41,7 @@ const TasksTable: React.FC<ITasksTableProps> = (_props) => {
   const [isEditModaleVisible, setIsEditModaleVisible] =
     useState<boolean>(false);
   const [choosenRecord, setChoosenRecord] = useState<ITask>();
-  const reduxData = useSelector((state: RootState) => state.app);
+  const reduxData = useAppSelector((state) => state.app);
   const auth: string = reduxData.authToken;
   const [form] = Form.useForm();
   const columns = [

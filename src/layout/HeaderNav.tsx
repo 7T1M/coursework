@@ -10,13 +10,15 @@ import dpr from "../assets/img/ur-dpr75.png";
 import { setAuthToken } from "../redux/appSlice";
 import { useNavigate } from "react-router-dom";
 import Logger from "../logger/Logger";
+import { useAppSelector,useAppDispatch } from "../redux/hooks";
+
 import { RootState,AppDispatch } from "../store";
 const { Header } = Layout;
 export default function HeaderNav() {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const collapsed = useSelector((state: RootState) => state.sideNav.collapsed);
-  const logger: Logger = useSelector((state: RootState) => state.app.logger!);
+  const collapsed = useAppSelector((state) => state.sideNav.collapsed);
+  const logger: Logger = useAppSelector((state) => state.app.logger!);
   function OnCollapse() {
     if (collapsed) dispatch(setCollapsed(false));
     else dispatch(setCollapsed(true));

@@ -6,8 +6,9 @@ import { useDispatch } from "react-redux";
 import { setLogger } from "../../../../redux/appSlice";
 import Logger from "../../../../logger/Logger";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../../redux/hooks";
 export default function LoginForm() {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   function onSubmit(values) {
     adminServices

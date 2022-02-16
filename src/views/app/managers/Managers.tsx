@@ -20,20 +20,22 @@ import adminServices from "../../../services/admin";
 import { IService } from "../../../shared-interfaces/IService";
 import Logger from "../../../logger/Logger";
 import { RootState, AppDispatch } from "../../../store";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+
 const { Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
 
 export default function Managers() {
   const [form] = Form.useForm();
-  const auth = useSelector((state: RootState) => state.app.authToken);
+  const auth = useAppSelector((state) => state.app.authToken);
   const [managers, setManagers] = useState<Array<IService>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isCreateModalVisible, setIsCreateModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const dispatch: AppDispatch = useDispatch();
-  const logger: Logger = useSelector((state: RootState) => state.app.logger!);
+  const dispatch = useAppDispatch();
+  const logger: Logger = useAppSelector((state) => state.app.logger!);
   useEffect(() => {
     dispatch(selectRoute("managers"));
     logger.userChangePage("managers");

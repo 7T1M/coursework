@@ -6,12 +6,13 @@ import moment from "moment";
 import { useDispatch,useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
+import { useAppDispatch } from "../../../redux/hooks";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function Roles() {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const logger = useSelector((state) => state.app.logger);
 
   useEffect(() => {

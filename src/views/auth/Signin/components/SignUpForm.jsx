@@ -8,7 +8,7 @@ import { MailOutlined, LockOutlined } from "@ant-design/icons";
 
 export default function SignUpForm() {
   // const navigate = useNavigate();
-  // const dispatch: AppDispatch = useDispatch();
+  // const dispatch = useAppDispatch();
 
   function onSubmit(values) {
   //  adminServices.signUp(values.email,values.password).then((res:any)=> {

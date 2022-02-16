@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import adminServices from "../../../services/admin";
 import lib from "../../../lib/lib";
@@ -63,7 +63,7 @@ const UsersTable: React.FC<IUserTableProps> = (_props) => {
   const [isProfileModaleVisible, setIsProfileModaleVisible] = useState(false);
   const [isEditModaleVisible, setIsEditModaleVisible] = useState(false);
   const [choosenRecord, setChoosenRecord] = useState<iUser>();
-  const reduxData = useSelector((state: RootState) => state.app);
+  const reduxData = useAppSelector((state) => state.app);
   const [form] = Form.useForm();
 
   const columns = [

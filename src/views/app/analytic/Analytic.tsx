@@ -10,12 +10,14 @@ import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import Logger from "../../../logger/Logger";
 import { RootState,AppDispatch } from "../../../store";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function Analytic() {
-  const dispatch: AppDispatch = useDispatch();
-  const logger: Logger = useSelector((state: RootState) => state.app.logger!);
+  const dispatch = useAppDispatch();
+  const logger: Logger = useAppSelector((state) => state.app.logger!);
   useEffect(() => {
     dispatch(selectRoute("analytic"));
     logger.userChangePage("analytic");
@@ -32,7 +34,7 @@ export default function Analytic() {
       )} в ${moment().hours()}:${moment().minute()}`
     );
   }
-
+  
   return (
     <Row gutter={16}>
       <Col xs={24} sm={24} md={24} lg={24}>

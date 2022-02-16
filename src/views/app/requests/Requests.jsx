@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
+import { useAppDispatch } from "../../../redux/hooks";
 
 import tasks from "./data";
 const { Title } = Typography;
@@ -16,7 +17,7 @@ export default function Requests() {
   const [claims, setClaims] = useState();
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const auth = useSelector((state) => state.app.authToken);
   const logger = useSelector((state) => state.app.logger);
 

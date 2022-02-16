@@ -5,6 +5,7 @@ import adminServices from "../../../services/admin";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 const gradient = [
   "rgba(0, 255, 255, 0)",
   "rgba(0, 255, 255, 1)",
@@ -23,9 +24,9 @@ const gradient = [
 ];
 
 function MapPage(props) {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const auth = useSelector((state) => state.app.authToken);
-  const logger = useSelector((state) => state.app.logger);
+  const logger = useAppSelector((state) => state.app.logger);
   const [coordinates, setCoordinates] = useState([]);
   useEffect(() => {
     dispatch(selectRoute("heatmap"));

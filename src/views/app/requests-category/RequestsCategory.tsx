@@ -21,20 +21,22 @@ import adminServices from "../../../services/admin";
 import { setClaimTypes } from "../../../redux/appSlice";
 import { IClaimType } from "../../../shared-interfaces/IClaimType";
 import { AppDispatch, RootState } from "../../../store";
+import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function RequestsCategory() {
   const [form] = Form.useForm();
-  const auth = useSelector((state: RootState) => state.app.authToken);
+  const auth = useAppSelector((state) => state.app.authToken);
   const [categories, setCategories] = useState<Array<IClaimType>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isCreateClaimModalVisible, setIsCreateClaimModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const logger = useSelector((state: RootState) => state.app.logger!);
+  const logger = useAppSelector((state) => state.app.logger!);
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(selectRoute("requests-categories"));
     logger.userChangePage("requests-categories");
