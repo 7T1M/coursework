@@ -10,17 +10,17 @@ import { selectRoute } from "../../../redux/sideNavSlice";
 import ChartWidget from "../../../components";
 import { weeklyActiveData } from "./chartData";
 import adminServices from "../../../services/admin";
-
+import { AppDispatch, RootState } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function Users() {
-  const dispatch = useDispatch();
-  const auth = useSelector((state: any) => state.app.authToken);
+  const dispatch: AppDispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.app.authToken);
   const [users, setUsers] = useState([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const logger = useSelector((state: any) => state.app.logger);
+  const logger = useSelector((state: RootState) => state.app.logger!);
 
   useEffect(() => {
     dispatch(selectRoute("users"));

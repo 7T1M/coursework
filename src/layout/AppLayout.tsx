@@ -8,6 +8,7 @@ import AppRoutes from "../components/AppRoutes";
 import { useEffect } from "react";
 import adminServices from "../services/admin";
 import Logger from "../logger/Logger";
+import { RootState,AppDispatch } from "../store";
 import {
   setCities,
   setPoints,
@@ -16,14 +17,15 @@ import {
   setServices,
   setLogger,
 } from "../redux/appSlice";
+import { IAppState, ILoggerObject } from "../shared-interfaces/IAppState";
 const { Content } = Layout;
 
 export default function AppLayout() {
-  const dispatch = useDispatch();
-  const collapsed = useSelector((state:any) => state.sideNav.collapsed);
-  const auth = useSelector((state:any) => state.app.authToken);
+  const dispatch: AppDispatch = useDispatch();
+  const collapsed = useSelector((state:RootState) => state.sideNav.collapsed);
+  const auth = useSelector((state:RootState) => state.app.authToken);
   const padding = collapsed ? "80px" : "250px";
-  const logger = useSelector((state:any) => state.app.logger);
+  const logger: IAppState | ILoggerObject = useSelector((state:RootState) => state.app.logger!);
   if (logger instanceof Logger) {
   } else {
     const newLogger = new Logger(logger.userName, logger.logText);

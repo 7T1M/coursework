@@ -1,20 +1,19 @@
 import { Button, Form, Input } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import adminServices from "../../../../services/admin";
-import { setAuthToken, setUserName } from "../../../../redux/appSlice";
+import { setAuthToken } from "../../../../redux/appSlice";
 import { useDispatch } from "react-redux";
 import { setLogger } from "../../../../redux/appSlice";
 import Logger from "../../../../logger/Logger";
 import { useNavigate } from "react-router-dom";
 export default function LoginForm() {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   function onSubmit(values) {
     adminServices
       .login(values.email, values.password)
       .then((res) => {
         dispatch(setAuthToken(res.data.data.access_token));
-        dispatch(setUserName(values.email));
         const logger = new Logger(values.email);
         logger.userLogin();
         dispatch(setLogger(logger));

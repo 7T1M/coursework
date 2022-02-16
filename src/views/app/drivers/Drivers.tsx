@@ -18,24 +18,25 @@ import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { IDriver } from "../../../shared-interfaces/IDriver";
+import { RootState, AppDispatch } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function Drivers() {
   const [form] = Form.useForm();
 
-  const auth = useSelector((state: any) => state.app.authToken);
-  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.app.authToken);
+  const dispatch: AppDispatch = useDispatch();
   const [drivers, setDrivers] = useState<Array<IDriver>>([]);
   const [updateData, setUpdateData] = useState<boolean>(false);
   const [isCreateModalVisible, setIsCreateModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const reduxData = useSelector((state: any) => state.app);
+  const reduxData = useSelector((state: RootState) => state.app);
 
   useEffect(() => {
     dispatch(selectRoute("drivers"));
-    reduxData.logger.userChangePage("drivers");
+    reduxData.logger!.userChangePage("drivers");
 
     getDrivers();
   }, []);

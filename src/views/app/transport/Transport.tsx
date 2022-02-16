@@ -19,24 +19,24 @@ import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { setRoutes } from "../../../redux/appSlice";
 import { IRoute } from "../../../shared-interfaces/IRoute";
-
+import { RootState, AppDispatch } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function Transport() {
   const [form] = Form.useForm();
-  const auth = useSelector((state: any) => state.app.authToken);
-  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.app.authToken);
+  const dispatch: AppDispatch = useDispatch();
   const [routes, setLocalRoutes] = useState<Array<IRoute>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isCreateModalVisible, setIsCreateModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const reduxData = useSelector((state: any) => state.app);
+  const reduxData = useSelector((state: RootState) => state.app);
 
   useEffect(() => {
     dispatch(selectRoute("transport"));
-    reduxData.logger.userChangePage("transport");
+    reduxData.logger!.userChangePage("transport");
 
     getRoutes();
   }, []);

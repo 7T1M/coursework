@@ -9,7 +9,7 @@ import AppLayout from "./layout/AppLayout";
 import "./css/light-theme.css";
 import AuthRoutes from "./components/AuthRoutes";
 import { useSelector } from "react-redux";
-
+import {RootState} from "./store"
 interface IGuardRouteProps extends Omit<RouteProps, "components"> {
   component: React.ElementType;
   auth: boolean;
@@ -31,7 +31,7 @@ const AuthRoute: React.FC<IGuardRouteProps> = ({component:Component, auth}) => {
 }
 
 function App() {
-  const auth:string = useSelector((state: any) => state.app.authToken);
+  const auth:string = useSelector((state: RootState) => state.app.authToken);
   return (
     <Router>
       <Routes>

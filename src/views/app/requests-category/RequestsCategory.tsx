@@ -20,20 +20,21 @@ import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { setClaimTypes } from "../../../redux/appSlice";
 import { IClaimType } from "../../../shared-interfaces/IClaimType";
+import { AppDispatch, RootState } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function RequestsCategory() {
   const [form] = Form.useForm();
-  const auth = useSelector((state: any) => state.app.authToken);
+  const auth = useSelector((state: RootState) => state.app.authToken);
   const [categories, setCategories] = useState<Array<IClaimType>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isCreateClaimModalVisible, setIsCreateClaimModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const logger = useSelector((state: any) => state.app.logger);
+  const logger = useSelector((state: RootState) => state.app.logger!);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
     dispatch(selectRoute("requests-categories"));
     logger.userChangePage("requests-categories");
@@ -62,7 +63,6 @@ export default function RequestsCategory() {
   function getCategories() {
     setIsDataLoading(true);
     adminServices.getClaimCategories(auth).then((res: any) => {
-     ;
       setIsDataUpdated(false);
       setCategories(res.data.data);
       setIsDataLoading(false);
@@ -73,7 +73,6 @@ export default function RequestsCategory() {
     adminServices
       .createClaimType(auth, data)
       .then((res: any) => {
-       ;
         setIsDataUpdated(true);
         setIsCreateClaimModalVisible(false);
         form.resetFields();

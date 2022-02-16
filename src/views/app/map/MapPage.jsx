@@ -23,7 +23,7 @@ const gradient = [
 ];
 
 function MapPage(props) {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const auth = useSelector((state) => state.app.authToken);
   const logger = useSelector((state) => state.app.logger);
   const [coordinates, setCoordinates] = useState([]);

@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import lib from "../../../lib/lib"
 import { IRoute } from "../../../shared-interfaces/IRoute";
 import React from "react";
-
+import { RootState } from "../../../store";
 const { confirm } = Modal;
 const { Title } = Typography;
 const { Option } = Select;
@@ -62,7 +62,7 @@ const TransportTable: React.FC<ITransportTableProps> = ({
   const [isEditModaleVisible, setIsEditModaleVisible] =
     useState<boolean>(false);
   const [choosenRecord, setChoosenRecord] = useState<IRoute>();
-  const reduxData = useSelector((state: any) => state.app);
+  const reduxData = useSelector((state: RootState) => state.app);
   const [form] = Form.useForm();
 
   const columns = [

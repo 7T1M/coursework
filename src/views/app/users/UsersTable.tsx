@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import adminServices from "../../../services/admin";
 import lib from "../../../lib/lib";
-
+import { RootState } from "../../../store";
 const { confirm } = Modal;
 const { Title } = Typography;
 const { Option } = Select;
@@ -63,7 +63,7 @@ const UsersTable: React.FC<IUserTableProps> = (_props) => {
   const [isProfileModaleVisible, setIsProfileModaleVisible] = useState(false);
   const [isEditModaleVisible, setIsEditModaleVisible] = useState(false);
   const [choosenRecord, setChoosenRecord] = useState<iUser>();
-  const reduxData = useSelector((state: any) => state.app);
+  const reduxData = useSelector((state: RootState) => state.app);
   const [form] = Form.useForm();
 
   const columns = [

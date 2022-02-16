@@ -3,12 +3,13 @@ import { useSelector } from "react-redux";
 import menus from "../configs/sideBardMenus";
 import { Link } from "react-router-dom";
 import Icon from "../custom-components/Icon";
+import { RootState } from "../store";
 const { Sider } = Layout;
 
 export default function SiderNav() {
-  const collapsed = useSelector((state: any) => state.sideNav.collapsed);
+  const collapsed = useSelector((state: RootState) => state.sideNav.collapsed);
   const selectedRoute = useSelector(
-    (state: any) => state.sideNav.selectedRoute
+    (state: RootState) => state.sideNav.selectedRoute
   );
 
   return (
@@ -24,7 +25,7 @@ export default function SiderNav() {
           paddingTop: "10%",
         }}
         mode="inline"
-        defaultSelectedKeys={selectedRoute}
+        defaultSelectedKeys={[selectedRoute]}
       >
         {menus.map((menu) => (
           <Menu.Item

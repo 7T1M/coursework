@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ISideNavState } from "../shared-interfaces/ISideNavState";
+
+const initialState = {
+  collapsed: false,
+  selectedRoute: "analytic",
+} as ISideNavState;
 
 export const counterSlice = createSlice({
   name: "sideNavSlice",
-  initialState: {
-    collapsed: false,
-    selectedRoute: "analytic",
-  },
+  initialState,
   reducers: {
     setCollapsed: (s, action) => {
       s.collapsed = action.payload;

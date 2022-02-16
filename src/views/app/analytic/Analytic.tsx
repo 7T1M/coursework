@@ -9,12 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import Logger from "../../../logger/Logger";
+import { RootState,AppDispatch } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 
 export default function Analytic() {
-  const dispatch = useDispatch();
-  const logger: Logger = useSelector((state: any) => state.app.logger);
+  const dispatch: AppDispatch = useDispatch();
+  const logger: Logger = useSelector((state: RootState) => state.app.logger!);
   useEffect(() => {
     dispatch(selectRoute("analytic"));
     logger.userChangePage("analytic");

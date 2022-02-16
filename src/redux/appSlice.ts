@@ -1,18 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Logger from "../logger/Logger";
+import { IAppState } from "../shared-interfaces/IAppState";
+
+const initialState = {
+  authToken: "",
+  cities: [],
+  points: [],
+  routes: [],
+  claimTypes: [],
+  services: [],
+  logger: null,
+} as IAppState;
 
 export const counterSlice = createSlice({
   name: "appSlice",
-  initialState: {
-    authToken: "",
-    cities: [],
-    points: [],
-    routes: [],
-    claimTypes: [],
-    services: [],
-    userName: "",
-    logText: "",
-    logger: "",
-  },
+  initialState,
   reducers: {
     setAuthToken: (s, action) => {
       s.authToken = action.payload;
@@ -32,12 +34,6 @@ export const counterSlice = createSlice({
     setServices: (s, action) => {
       s.services = action.payload;
     },
-    setUserName: (s, action) => {
-      s.userName = action.payload;
-    },
-    setLogText: (s, action) => {
-      s.logText = action.payload;
-    },
     setLogger: (s, action) => {
       s.logger = action.payload;
     },
@@ -52,9 +48,7 @@ export const {
   setRoutes,
   setClaimTypes,
   setServices,
-  setUserName,
-  setLogText,
-  setLogger
+  setLogger,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

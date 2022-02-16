@@ -19,21 +19,21 @@ import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { IService } from "../../../shared-interfaces/IService";
 import Logger from "../../../logger/Logger";
-
+import { RootState, AppDispatch } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
 
 export default function Managers() {
   const [form] = Form.useForm();
-  const auth = useSelector((state: any) => state.app.authToken);
+  const auth = useSelector((state: RootState) => state.app.authToken);
   const [managers, setManagers] = useState<Array<IService>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isCreateModalVisible, setIsCreateModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
-  const logger: Logger = useSelector((state: any) => state.app.logger);
+  const dispatch: AppDispatch = useDispatch();
+  const logger: Logger = useSelector((state: RootState) => state.app.logger!);
   useEffect(() => {
     dispatch(selectRoute("managers"));
     logger.userChangePage("managers");

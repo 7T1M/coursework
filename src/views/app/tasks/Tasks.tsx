@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { ITask } from "../../../shared-interfaces/ITask";
+import { RootState, AppDispatch } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -15,9 +16,9 @@ export default function Tasks() {
   const [tasksData, setTasksData] = useState<Array<ITask>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const auth = useSelector((state: any) => state.app.authToken);
-  const dispatch = useDispatch();
-  const logger = useSelector((state: any) => state.app.logger);
+  const auth = useSelector((state: RootState) => state.app.authToken);
+  const dispatch: AppDispatch = useDispatch();
+  const logger = useSelector((state: RootState) => state.app.logger!);
 
   useEffect(() => {
     dispatch(selectRoute("tasks"));

@@ -20,7 +20,7 @@ import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { NewsPreview } from "./NewsPreview";
 import { INews } from "./INews";
-
+import { RootState,AppDispatch } from "../../../store";
 const { Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
@@ -30,8 +30,8 @@ export default function News() {
   const [isDataUpdated, setIsDataUpdated] = useState<Boolean>(false);
   const [isListLoading, setIsListLoading] = useState<Boolean>(false);
   const [imgUrl, setImgUrl] = useState<string>("");
-  const auth: string = useSelector((state: any) => state.app.authToken);
-  const reduxData = useSelector((state: any) => state.app);
+  const auth: string = useSelector((state: RootState) => state.app.authToken);
+  const reduxData = useSelector((state: RootState) => state.app);
   const [form] = Form.useForm();
   const props = {
     name: "file",
@@ -52,11 +52,11 @@ export default function News() {
     },
   };
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const FormItem = Form.Item;
   useEffect(() => {
     dispatch(selectRoute("news"));
-    reduxData.logger.userChangePage("news");
+    reduxData.logger!.userChangePage("news");
 
     setIsListLoading(true);
     getNews();

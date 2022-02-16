@@ -11,7 +11,7 @@ const { Title } = Typography;
 const { Option } = Select;
 
 export default function Roles() {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const logger = useSelector((state) => state.app.logger);
 
   useEffect(() => {

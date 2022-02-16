@@ -16,7 +16,7 @@ export default function Requests() {
   const [claims, setClaims] = useState();
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const auth = useSelector((state) => state.app.authToken);
   const logger = useSelector((state) => state.app.logger);
 

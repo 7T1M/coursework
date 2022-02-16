@@ -17,11 +17,11 @@ import adminServices from "../../../services/admin";
 import { useSelector } from "react-redux";
  import lib from "../../../lib/lib"
 import { IDriver } from "../../../shared-interfaces/IDriver";
+import { RootState } from "../../../store";
 import React from "react";
 const { Option } = Select;
 const { Title } = Typography;
 const { confirm } = Modal;
-
 function showDeleteConfirm(id: number, updateData: any, auth: string) {
   confirm({
     title: "Вы уверены что хотите удалить эту запись?",
@@ -60,7 +60,7 @@ const DriversTable: React.FC<IDriversTableProps> = ({
   const [isProfileModaleVisible, setIsProfileModaleVisible] = useState(false);
   const [isEditModaleVisible, setIsEditModaleVisible] = useState(false);
   const [choosenRecord, setChoosenRecord] = useState<IDriver>();
-  const reduxData = useSelector((state: any) => state.app);
+  const reduxData = useSelector((state: RootState) => state.app);
   const [form] = Form.useForm();
 
 
