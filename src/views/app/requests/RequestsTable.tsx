@@ -3,17 +3,16 @@ import {
   Row,
   Table,
   Modal,
-  Typography,
   Input,
   Button,
   Form,
   Select,
   Upload,
   message,
-  Tag
+  Empty,
 } from "antd";
-import React from "react";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import React, { useEffect } from "react";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import lib from "../../../lib/lib";
@@ -21,8 +20,11 @@ import { useSelector } from "react-redux";
 import adminServices from "../../../services/admin";
 import { IClaimData } from "../../../shared-interfaces/IClaimData";
 import { IClaimType } from "../../../shared-interfaces/IClaimType";
+import { ColumnType } from "antd/es/table";
+import { useAppSelector } from "../../../redux/hooks";
+import Logger from "../../../logger/Logger";
+import tasksStatus from "../../../models/taskStatus";
 const { confirm } = Modal;
-const { Title } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -36,38 +38,43 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
     cancelText: "Нет",
     centered: true,
     onOk() {
-      adminServices.deleteClaim(auth, id).then((res:any) => {
-       ;
+      adminServices.deleteClaim(auth, id).then(() => {
         setIsDataUpdated(true);
       });
     },
-    onCancel() {
-    },
+    onCancel() {},
   });
 }
 interface IRequestsTableProps {
-  tasks: Array<IClaimData>;
-  setIsDataUpdated: any;
+  claims: IClaimData[];
+  setIsDataUpdated: React.Dispatch<boolean>;
   isLoading: boolean;
   auth: string;
+  pageSize: number;
+  setPageSize: React.Dispatch<number>;
 }
 
 const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
-  const [isProfileModaleVisible, setIsProfileModaleVisible] = useState(false);
   const [isEditModaleVisible, setIsEditModaleVisible] = useState(false);
-  const [choosenRecord, setChoosenRecord] = useState<IClaimData>();
-  const reduxData = useSelector((state:any) => state.app);
+  const [choosenRecord, setChoosenRecord] = useState<IClaimData>(
+    _props.claims[0]
+  );
+  const reduxData = useSelector((state: any) => state.app);
   const [imgUrl, setImgUrl] = useState("");
   const [form] = Form.useForm();
+  const logger: Logger = useAppSelector((state) => state.app.logger!);
 
+  useEffect(() => {
+    form.setFieldsValue(choosenRecord);
+  }, [choosenRecord]);
   const props = {
     name: "file",
-    action: "http://localhost:3000/storage/load",
+    action: "http://api.rep2u.ru/storage/load",
     headers: {
       ContentType: "multipart/form-data",
       authorization: `Bearer ${_props.auth}`,
     },
-    onChange(info:any) {
+    onChange(info: any) {
       if (info.file.status !== "uploading") {
         setImgUrl(info.file.response.data.url);
       }
@@ -79,7 +86,7 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
     },
   };
 
-  const columns = [
+  const columns: ColumnType<IClaimData>[] = [
     {
       title: "Номер",
       width: "30px",
@@ -90,8 +97,8 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
       width: "200px",
       dataIndex: "claimType",
 
-      render: (text:number) => {
-        return <div>{lib.getClaimType(text, reduxData.claimTypes)}</div>;
+      render: (id: number) => {
+        return <div>{lib.getInstanceName(id, reduxData.claimTypes)}</div>;
       },
     },
     {
@@ -107,37 +114,30 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
       title: "Рейтинг",
       dataIndex: "rate",
       render: (data: number) => {
-        return <div>{lib.ratingTag(data)}</div>
+        return <div>{lib.ratingTag(data)}</div>;
       },
     },
     {
       title: "Статус",
       dataIndex: "status",
-      render: (text:number) => {
+      width: "100px",
+      render: (text: number) => {
         return <div>{lib.getStatus(text)}</div>;
       },
     },
     {
       title: "Изображение",
-      width: "100px",
+      width: "150px",
       dataIndex: "urlPreview",
 
-      render: (text:string) => {
-        return (
-          <div>
-            <Button>
-              <a href={text} target="blank">
-                Посмотреть Изображение
-              </a>
-            </Button>
-          </div>
-        );
+      render: (url: string) => {
+        return <img src={url} width={150} height={100} alt="" />;
       },
     },
     {
       title: "Описание",
       dataIndex: "description",
-      render: (text:string) => {
+      render: (text: string) => {
         if (text.length > 50) {
           return <div>{text.slice(0, 50) + "..."}</div>;
         } else return <div>{text}</div>;
@@ -154,29 +154,30 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
     {
       title: "Действия",
       dataIndex: "",
-      width: "150px",
+      width: "200px",
 
-      render: ( record:IClaimData) => {
+      render: (record: IClaimData) => {
         return (
-          <Row justify="space-between">
-            <Col className="cursor-pointer text-xl" span={4}>
+          <Row justify="center" className="text-center">
+            <Col className="cursor-pointer text-xl">
               <DeleteOutlined
-                onClick={() =>
-                  showDeleteConfirm(record.id, _props.setIsDataUpdated, _props.auth)
-                }
-              />
-            </Col>
-            <Col className="cursor-pointer text-xl" span={4}>
-              <EyeOutlined
                 onClick={() => {
-                  setIsProfileModaleVisible(true);
-                  setChoosenRecord(record);
+                  logger.userDeleteRecord("claims", record.title);
+                  showDeleteConfirm(
+                    record.id,
+                    _props.setIsDataUpdated,
+                    _props.auth
+                  );
                 }}
               />
             </Col>
-            <Col className="cursor-pointer text-xl" span={3}>
+
+            <Col className="cursor-pointer text-xl ml-5">
               <EditOutlined
                 onClick={() => {
+                  console.debug(record);
+                  record.status = String(record.status);
+                  console.debug(record);
                   setIsEditModaleVisible(true);
                   setChoosenRecord(record);
                 }}
@@ -188,110 +189,60 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
     },
   ];
 
-  function onFinish(values:IClaimData) {
+  function onFinish(values: IClaimData) {
     values.id = choosenRecord?.id!;
-    values.urlPreview = `http://localhost:3000${imgUrl}`;
-    adminServices.updateClaim(_props.auth, values).then((res:any) => {
-     ;
+    values.urlPreview =
+      imgUrl !== "" ? `http://api.rep2u.ru${imgUrl}` : undefined;
+    adminServices.updateClaim(_props.auth, values).then(() => {
       _props.setIsDataUpdated(true);
       setIsEditModaleVisible(false);
       form.resetFields();
+      logger.userEditRecord("claims", values.title);
     });
   }
+
+  function closeEditModal() {
+    setIsEditModaleVisible(false);
+
+    form.resetFields();
+  }
+
   return (
     <Row>
       <Col span={24}>
         <Table
           columns={columns}
-          dataSource={_props.tasks}
+          dataSource={_props.claims}
           scroll={{ x: 1000 }}
           loading={_props.isLoading}
+          locale={{ emptyText: <Empty description="Тут ничего нет :(" /> }}
+          pagination={{
+            pageSize: _props.pageSize,
+            onChange: (page, pageSize) => {
+              _props.setPageSize(pageSize);
+            },
+          }}
         />
       </Col>
-      <Modal
-        visible={isProfileModaleVisible}
-        onCancel={() => setIsProfileModaleVisible(false)}
-        footer={null}
-        width={800}
-        title={`Просмотр задания №${choosenRecord?.id}`}
-      >
-        <Row>
-          <Col span={11}>
-            <Row>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Категория:{" "}
-                  {lib.getClaimType(choosenRecord?.claimType!, reduxData.claimTypes)}
-                </Title>{" "}
-              </Col>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Адрес: {choosenRecord?.address}
-                </Title>{" "}
-              </Col>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Заголовок:
-                </Title>{" "}
-                <Row>
-                  <Title level={4}>{choosenRecord?.title}</Title>
-                </Row>
-              </Col>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Статус: {lib.getStatus(choosenRecord?.statusId!)}
-                </Title>{" "}
-              </Col>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Рейтинг: {lib.ratingTag(choosenRecord?.rate!)}
-                </Title>{" "}
-              </Col>
-            </Row>
-          </Col>
-          <Col span={11}>
-            <Row>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Описание:
-                </Title>{" "}
-                <TextArea
-                  readOnly
-                  value={choosenRecord?.description}
-                  rows={4}
-                ></TextArea>
-              </Col>
-            </Row>
-            <Row className="pt-3">
-              <Col span={24}>
-                <Button type="primary">
-                  <a href={choosenRecord?.urlPreview} target="blank">
-                    {" "}
-                    Посмотреть изображение
-                  </a>
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Modal>
+
       <Modal
         visible={isEditModaleVisible}
         footer={null}
-        onCancel={() => setIsEditModaleVisible(false)}
-        title={`Редактирование зявки №${choosenRecord?.id}`}
+        onCancel={closeEditModal}
+        title={choosenRecord?.title}
         width={1000}
       >
-        <Form form={form} onFinish={onFinish}>
+        <Form form={form} onFinish={onFinish} initialValues={choosenRecord}>
           <Row justify="space-between">
             <Col span={11}>
               <Row>
                 <Col span={24}>
                   <Form.Item name="claimType">
                     <Select placeholder="Категория">
-                      {" "}
-                       {reduxData.claimTypes.map((item: IClaimType) => (
-                        <Option value={`${item.id}`}>{item.name}</Option>
+                      {reduxData.claimTypes.map((item: IClaimType) => (
+                        <Option key={item.id} value={item.id}>
+                          {item.name}
+                        </Option>
                       ))}
                     </Select>
                   </Form.Item>
@@ -310,6 +261,17 @@ const RequestsTable: React.FC<IRequestsTableProps> = (_props) => {
                 <Col span={24}>
                   <Form.Item name="rate">
                     <Input type="number" placeholder="Рейтинг" />
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Form.Item name="status">
+                    <Select placeholder="Статус">
+                      {Object.keys(tasksStatus).map((item) => (
+                        <Option key={item} value={item}>
+                          {lib.getStatus(Number(item))}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
               </Row>

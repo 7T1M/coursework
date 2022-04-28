@@ -6,34 +6,37 @@ import {
   Routes,
 } from "react-router-dom";
 import AppLayout from "./layout/AppLayout";
-import "./css/light-theme.css";
 import AuthRoutes from "./components/AuthRoutes";
-import { useSelector } from "react-redux";
-import {RootState} from "./store"
-import { useAppSelector,useAppDispatch } from "./redux/hooks";
+import { useAppSelector } from "./redux/hooks";
 
 interface IGuardRouteProps extends Omit<RouteProps, "components"> {
   component: React.ElementType;
   auth: boolean;
 }
 
-const  PrivateRoute:React.FC<IGuardRouteProps> = ({component:Component, auth}) => {
+const PrivateRoute: React.FC<IGuardRouteProps> = ({
+  component: Component,
+  auth,
+}) => {
   if (auth) {
     return <Component />;
   } else {
     return <Navigate to="/" />;
   }
-}
-const AuthRoute: React.FC<IGuardRouteProps> = ({component:Component, auth}) => {
+};
+const AuthRoute: React.FC<IGuardRouteProps> = ({
+  component: Component,
+  auth,
+}) => {
   if (auth) {
     return <Navigate to="/app/" />;
   } else {
     return <Component />;
   }
-}
+};
 
 function App() {
-  const auth:string = useAppSelector((state) => state.app.authToken);
+  const auth: string = useAppSelector((state) => state.app.authToken);
   return (
     <Router>
       <Routes>

@@ -1,23 +1,21 @@
 import { Layout, Menu } from "antd";
 import { useSelector } from "react-redux";
-import menus from "../configs/sideBardMenus";
+import menus from "../configs/Routes";
 import { Link } from "react-router-dom";
 import Icon from "../custom-components/Icon";
 import { RootState } from "../store";
-import { useAppSelector,useAppDispatch } from "../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../redux/hooks";
 
 const { Sider } = Layout;
 
 export default function SiderNav() {
   const collapsed = useAppSelector((state) => state.sideNav.collapsed);
-  const selectedRoute = useSelector(
-    (state: RootState) => state.sideNav.selectedRoute
-  );
+  const selectedRoute = useAppSelector((state) => state.sideNav.selectedRoute);
 
   return (
     <Sider
       width={250}
-      className="site-layout-background ant-layout-sider-dark side-nav"
+      className="site-layout-background ant-layout-sider-dark side-nav overflow-auto"
       collapsed={collapsed}
     >
       <Menu
@@ -33,7 +31,7 @@ export default function SiderNav() {
           <Menu.Item
             key={menu.key}
             style={{ fontSize: "15px" }}
-            icon={<Icon className="text-lg" type={menu.icon} />}
+            icon={<Icon className="text-lg" name={menu.icon} />}
           >
             <Link to={menu.path}> {menu.name} </Link>
           </Menu.Item>

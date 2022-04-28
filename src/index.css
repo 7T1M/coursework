@@ -126,9 +126,7 @@ ant-pagination-item {
 .ant-pagination-prev .ant-pagination-item-link {
   border-radius: 50%;
 }
-.ant-pagination-item-active a {
-  color: white !important;
-}
+
 .ant-menu-vertical .ant-menu-item::after,
 .ant-menu-vertical-left .ant-menu-item::after,
 .ant-menu-vertical-right .ant-menu-item::after,
@@ -150,7 +148,7 @@ ant-pagination-item {
 .ant-menu-vertical .ant-menu-item:after,
 .ant-menu-vertical-left .ant-menu-item:after,
 .ant-menu-vertical-right .ant-menu-item:after {
-  border-right: 3 px solid #3e82f7;
+  border-right: 3 px solid #3e82f7 !important;
 }
 .product-stat-description {
   display: flex;
@@ -171,4 +169,11 @@ ant-pagination-item {
 }
 .logoText {
   transition: opacity 0.5s, visibility 0s linear 0.3s;
+}
+.ant-pagination-options {
+  display: none !important;
+}
+ant-notification-bottom {
+  transform: translateX(-50%);
+  inset: auto auto 24px 50%;
 }

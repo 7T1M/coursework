@@ -3,16 +3,14 @@ import {
   MenuUnfoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
 import { setCollapsed } from "../redux/sideNavSlice";
 import { Layout, Row, Col, Button } from "antd";
 import dpr from "../assets/img/ur-dpr75.png";
 import { setAuthToken } from "../redux/appSlice";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import Logger from "../logger/Logger";
-import { useAppSelector,useAppDispatch } from "../redux/hooks";
 
-import { RootState,AppDispatch } from "../store";
 const { Header } = Layout;
 export default function HeaderNav() {
   const dispatch = useAppDispatch();
@@ -28,13 +26,10 @@ export default function HeaderNav() {
     dispatch(setAuthToken(""));
     navigate("/");
   }
-  function downloadLog() {
-    logger.downloadLog();
-  }
   return (
     <Header className="bg-white app-header dark">
       <div className="app-header-wrapper">
-        <div className="logo" style={{ width: 250 }}>
+        <div className="flex" style={{ width: 250 }}>
           <img className="cursor-pointer" src={dpr} alt="logo" />
           <div className="logoText">ТВОЯ РЕСПУБЛИКА</div>
         </div>
@@ -51,7 +46,11 @@ export default function HeaderNav() {
         </div>
         <div className="nav-right">
           <div style={{ display: "flex", marginRight: 20 }}>
-            <Button className="mr-5" onClick={downloadLog} type="primary">
+            <Button
+              className="mr-5"
+              onClick={() => logger.downloadLog()}
+              type="primary"
+            >
               Скачать Лог Пользователя
             </Button>
             <Button type="primary" onClick={logout} icon={<UserOutlined />}>

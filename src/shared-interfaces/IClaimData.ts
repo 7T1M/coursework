@@ -4,9 +4,9 @@ export interface IClaimData {
   title: string;
   email: string;
   address: string;
-  urlPreview: string;
+  urlPreview?: string;
   description: string;
   claimType: number;
-  statusId: number;
+  status: number | string;
   rate: number;
 }

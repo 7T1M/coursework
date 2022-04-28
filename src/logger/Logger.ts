@@ -11,8 +11,9 @@ export default class Logger {
     }
   }
 
-  downloadLog() {
+  downloadLog(): void {
     let download: HTMLElement = document.getElementById("fileDownload")!;
+    console.debug(download);
     download.setAttribute(
       "href",
       `data:text/plain;charset=utf-8,${encodeURIComponent(this.logText)})`
@@ -28,9 +29,9 @@ export default class Logger {
     );
     this.logText +=
       "-".repeat(100) +
-      "\n" +
+      "\n \n" +
       moment().format("MMMM Do YYYY, h:mm:ss") +
-      `=== Пользователь ${this.userName} авторизовался \n`;
+      ` === Пользователь ${this.userName} авторизовался \n`;
   }
   userLogout(): void {
     console.log(
@@ -39,13 +40,13 @@ export default class Logger {
     );
     this.logText +=
       "-".repeat(100) +
-      "\n" +
+      "\n \n" +
       moment().format("MMMM Do YYYY, h:mm:ss") +
-      `==== ${this.userName} вышел из аккаунта \n`;
+      ` ==== ${this.userName} вышел из аккаунта \n`;
     this.downloadLog();
   }
 
-  userChangePage(page: string) {
+  userChangePage(page: string): void {
     console.log(
       moment().format("MMMM Do YYYY, h:mm:ss"),
       `=== Пользователь ${this.userName} перешел на страницу  ${page} \n`
@@ -54,6 +55,28 @@ export default class Logger {
       "-".repeat(100) +
       "\n" +
       moment().format("MMMM Do YYYY, h:mm:ss") +
-      `=== Пользователь ${this.userName} перешел на страницу  ${page} \n`;
+      `  === Пользователь ${this.userName} перешел на страницу  ${page} \n`;
+  }
+  userEditRecord(page: string, title: string): void {
+    console.log(
+      moment().format("MMMM Do YYYY, h:mm:ss"),
+      `=== Пользователь ${this.userName} изменил запись ${title} на странице  ${page} \n`
+    );
+    this.logText +=
+      "-".repeat(100) +
+      "\n" +
+      moment().format("MMMM Do YYYY, h:mm:ss") +
+      `  === Пользователь ${this.userName} изменил запись ${title} на странице  ${page} \n`;
+  }
+  userDeleteRecord(page: string, title: string): void {
+    console.log(
+      moment().format("MMMM Do YYYY, h:mm:ss"),
+      `=== Пользователь ${this.userName} удалил запись ${title} на странице  ${page} \n`
+    );
+    this.logText +=
+      "-".repeat(100) +
+      "\n" +
+      moment().format("MMMM Do YYYY, h:mm:ss") +
+      `  === Пользователь ${this.userName} удалил запись ${title} на странице  ${page} \n`;
   }
 }

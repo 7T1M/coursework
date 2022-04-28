@@ -1,16 +1,21 @@
-import { Col, Row, Table, Tag, Modal, Typography, Form } from "antd";
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { Col, Row, Table, Tag, Modal, Empty } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import React from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import adminServices from "../../../services/admin";
 import { IClaimType } from "../../../shared-interfaces/IClaimType";
 import lib from "../../../lib/lib";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../redux/hooks";
+import { ColumnType } from "antd/es/table";
+import { AxiosError } from "axios";
+import Logger from "../../../logger/Logger";
 const { confirm } = Modal;
-const { Title } = Typography;
 
-function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
+function showDeleteConfirm(
+  id: number,
+  setIsDataUpdated: React.Dispatch<boolean>,
+  auth: string
+) {
   confirm({
     title: "Вы уверены что хотите удалить эту запись?",
     icon: <ExclamationCircleOutlined />,
@@ -22,32 +27,33 @@ function showDeleteConfirm(id: number, setIsDataUpdated: any, auth: string) {
     onOk() {
       adminServices
         .deleteClaimCategory(auth, id)
-        .then((res:any) => {
-         ;
+        .then(() => {
           setIsDataUpdated(true);
         })
-        .catch((err:any) => console.error(err));
+        .catch((err: AxiosError) => console.error(err));
     },
     onCancel() {},
   });
 }
 interface IRequestsCategoryTableProps {
-  data: Array<IClaimType>;
-  setIsDataUpdated: any;
+  data: IClaimType[];
+  setIsDataUpdated: React.Dispatch<boolean>;
   auth: string;
   isDataLoading: boolean;
+  pageSize: number;
+  setPageSize: React.Dispatch<number>;
 }
 const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
   data,
   setIsDataUpdated,
   auth,
   isDataLoading,
+  setPageSize,
+  pageSize,
 }) => {
-  const [isProfileModaleVisible, setIsProfileModaleVisible] =
-    useState<boolean>(false);
-  const [choosenRecord, setChoosenRecord] = useState<IClaimType>();
-  const reduxData = useSelector((state:any)=> state.app)
-  const columns = [
+  const logger: Logger = useAppSelector((state) => state.app.logger!);
+  const reduxData = useAppSelector((state) => state.app);
+  const columns: ColumnType<IClaimType>[] = [
     {
       title: "Номер",
       width: "50px",
@@ -56,16 +62,16 @@ const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
     {
       title: "Контролирующий орган",
       dataIndex: "serviceControlId",
-      render:(data:number)=>{
-        return <span>{lib.getService(data,reduxData.services)}</span>
-      }
+      render: (data: number) => {
+        return <span>{lib.getInstanceName(data, reduxData.services)}</span>;
+      },
     },
     {
       title: "Исполнительный орган",
       dataIndex: "serviceExecuteId",
-      render:(data:number)=>{
-        return <span>{lib.getService(data,reduxData.services)}</span>
-      }
+      render: (data: number) => {
+        return <span>{lib.getInstanceName(data, reduxData.services)}</span>;
+      },
     },
 
     {
@@ -85,7 +91,7 @@ const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
       dataIndex: "priority",
 
       render: (data: number) => {
-        return priorityTag(data);
+        return <div className="text-center">{priorityTag(data)}</div>;
       },
     },
     {
@@ -98,16 +104,9 @@ const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
           <Row>
             <Col className="cursor-pointer text-xl" span={8}>
               <DeleteOutlined
-                onClick={() =>
-                  showDeleteConfirm(record.id!, setIsDataUpdated, auth)
-                }
-              />
-            </Col>
-            <Col className="cursor-pointer text-xl" span={8}>
-              <EyeOutlined
                 onClick={() => {
-                  setIsProfileModaleVisible(true);
-                  setChoosenRecord(record);
+                  logger.userDeleteRecord("claim types", record.name);
+                  showDeleteConfirm(record.id!, setIsDataUpdated, auth);
                 }}
               />
             </Col>
@@ -119,11 +118,11 @@ const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
 
   function priorityTag(priority: number) {
     if (priority <= 3) {
-      return <Tag color={"green"}>Низкий</Tag>;
+      return <Tag color={"green"}>{priority}</Tag>;
     } else if (priority > 3 && priority <= 6) {
-      return <Tag color={"orange"}>Средний</Tag>;
+      return <Tag color={"orange"}>{priority}</Tag>;
     } else if (priority > 6) {
-      return <Tag color={"red"}>Высокий</Tag>;
+      return <Tag color={"red"}>{priority}</Tag>;
     }
   }
 
@@ -135,69 +134,15 @@ const RequestsCategoryTable: React.FC<IRequestsCategoryTableProps> = ({
           dataSource={data}
           scroll={{ x: 1000 }}
           loading={isDataLoading}
+          locale={{ emptyText: <Empty description="Тут ничего нет :(" /> }}
+          pagination={{
+            pageSize: pageSize,
+            onChange: (page, pageSize) => {
+              setPageSize(pageSize);
+            },
+          }}
         />
       </Col>
-      <Modal
-        visible={isProfileModaleVisible}
-        onCancel={() => setIsProfileModaleVisible(false)}
-        footer={null}
-        width={800}
-        title={`Просмотр категории №${choosenRecord?.id}`}
-      >
-        <Row justify="space-between">
-          <Col span={11}>
-            <Row>
-              <Col span={24}>
-                <Title level={3}>Контролирующий орган:</Title>
-
-                <Row>{choosenRecord?.serviceControlId}</Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Исполнительный орган:
-                </Title>
-                <Row> {choosenRecord?.serviceExecuteId}</Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Название:
-                </Title>
-                <Row> {choosenRecord?.name}</Row>
-              </Col>
-            </Row>
-          </Col>
-          <Col span={11}>
-            <Row>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Мнемоническое имя
-                </Title>
-                <Row> {choosenRecord?.mnemonicName}</Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Тег:
-                </Title>
-                <Row> {choosenRecord?.tag}</Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Title className="inline-block" level={3}>
-                  Приоритет:
-                </Title>{" "}
-                <Row> {priorityTag(choosenRecord?.priority)}</Row>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Modal>
     </Row>
   );
 };

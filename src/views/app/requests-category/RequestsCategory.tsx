@@ -14,14 +14,13 @@ import {
 } from "antd";
 import RequestsCategoryTable from "./RequestsCategoryTable";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { setClaimTypes } from "../../../redux/appSlice";
 import { IClaimType } from "../../../shared-interfaces/IClaimType";
-import { AppDispatch, RootState } from "../../../store";
-import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../../../redux/hooks";
+import { IService } from "../../../shared-interfaces/IService";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -34,12 +33,12 @@ export default function RequestsCategory() {
   const [isCreateClaimModalVisible, setIsCreateClaimModalVisible] =
     useState<boolean>(false);
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
-  const logger = useAppSelector((state) => state.app.logger!);
-
-  const dispatch = useAppDispatch()
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [data, setData] = useState<IClaimType[]>();
+  const reduxData = useAppSelector((state) => state.app);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(selectRoute("requests-categories"));
-    logger.userChangePage("requests-categories");
 
     getCategories();
   }, []);
@@ -74,25 +73,25 @@ export default function RequestsCategory() {
   function createClaimType(data: IClaimType) {
     adminServices
       .createClaimType(auth, data)
-      .then((res: any) => {
+      .then(() => {
         setIsDataUpdated(true);
         setIsCreateClaimModalVisible(false);
         form.resetFields();
       })
-      .catch((err: any) => console.error(err));
+      .catch((err: Error) => console.error(err));
   }
-  function priorityTag(priority: number) {
-    if (priority <= 3) {
-      return <Tag color={"green"}>Низкий</Tag>;
-    } else if (priority > 3 && priority <= 6) {
-      return <Tag color={"orange"}>Средний</Tag>;
-    } else if (priority > 6) {
-      return <Tag color={"red"}>Высокий</Tag>;
-    }
-  }
+
   function onFinish(values: IClaimType) {
     values.priority = parseInt(values.priority);
     createClaimType(values);
+  }
+  function searchInDataTableData(str: string) {
+    return categories.filter((category) =>
+      category.name.toLocaleLowerCase().includes(str.toLowerCase())
+    );
+  }
+  function setSearchFilter(query: string): void {
+    setData(searchInDataTableData(query));
   }
   return (
     <Row gutter={16}>
@@ -101,11 +100,11 @@ export default function RequestsCategory() {
           <Col span={18}>
             <Row>
               <span className="opacity-80">{updateTime} </span>
-              <div className="text-2xl mx-5 leading-5 text-[#1B3452] opacity-80	 ">
+              <div className="text-2xl mx-3 mt-px leading-5 text-[#1B3452] opacity-80	 ">
                 &bull;{" "}
               </div>
               <div
-                className=" text-blue-700 opacity-85 cursor-pointer opacity-80"
+                className=" text-blue-700 opacity-85 cursor-pointer opacity-70 hover:opacity-100"
                 onClick={updateData}
               >
                 Обновить
@@ -118,14 +117,6 @@ export default function RequestsCategory() {
               <span>Полная информация о заявках</span>
             </Row>
           </Col>
-          {/* <Col span={4}>
-            <img
-              width={297}
-              height={140}
-              src={"/img/products-logo.png"}
-              alt="product"
-            ></img>
-          </Col> */}
         </Row>
         <Row style={{ marginTop: 24 }}>
           <Col span={24}>
@@ -133,8 +124,9 @@ export default function RequestsCategory() {
               <Row justify={"space-between"}>
                 <Col span={12}>
                   <Input
-                    placeholder="Поиск по артикулу..."
+                    placeholder="Поиск по имени..."
                     prefix={<SearchOutlined className="site-form-item-icon" />}
+                    onChange={(e) => setSearchFilter(e.target.value)}
                   />
                 </Col>
                 <Col>
@@ -148,21 +140,19 @@ export default function RequestsCategory() {
                 <Col span={7}>
                   <Row justify={"center"}>
                     <Col style={{ width: "100%" }}>
-                      <Select style={{ width: "100%" }} defaultValue={250}>
-                        <Option value={250}>Показывать по 250шт.</Option>
-                        <Option value={500}>Показывать по 500шт.</Option>
-                        <Option value={1000}>Показывать по 1000шт.</Option>
+                      <Select
+                        style={{ width: "100%" }}
+                        defaultValue={10}
+                        value={pageSize}
+                        onChange={(e) => setPageSize(e)}
+                      >
+                        <Option value={10}>Показывать по 10шт.</Option>
+                        <Option value={20}>Показывать по 20шт.</Option>
+                        <Option value={50}>Показывать по 50шт.</Option>
                       </Select>
                     </Col>
                   </Row>
                 </Col>
-                {/* <Col>
-                  <Row justify={"center"}>
-                    <Col>
-                      <Button icon={<CloudDownloadOutlined />}>XLS</Button>
-                    </Col>
-                  </Row>
-                </Col> */}
               </Row>
             </Card>
           </Col>
@@ -171,10 +161,12 @@ export default function RequestsCategory() {
           <Col span={24}>
             <Card>
               <RequestsCategoryTable
-                data={categories}
+                data={data ?? categories}
                 setIsDataUpdated={setIsDataUpdated}
                 auth={auth}
                 isDataLoading={isDataLoading}
+                pageSize={pageSize}
+                setPageSize={setPageSize}
               />
             </Card>
           </Col>
@@ -193,8 +185,12 @@ export default function RequestsCategory() {
               <Row>
                 <Col span={12}>
                   <Form.Item name="serviceExecuteId">
-                    <Select placeholder="Контролирующий орган">
-                      <Option value="1">1</Option>
+                    <Select placeholder="Исполнительный орган">
+                      {reduxData.services.map((service: IService) => (
+                        <Option key={service.id!} value={service.id}>
+                          {service.name}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -203,7 +199,11 @@ export default function RequestsCategory() {
                 <Col span={12}>
                   <Form.Item name="serviceControlId">
                     <Select placeholder="Контролирующий орган">
-                      <Option value="1">1</Option>
+                      {reduxData.services.map((service: IService) => (
+                        <Option key={service.id!} value={service.id}>
+                          {service.name}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -229,17 +229,19 @@ export default function RequestsCategory() {
                   </Form.Item>
                 </Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col span={12}>
                   <Form.Item name="priority">
                     <Select placeholder="Приоритет">
-                      <Option value="1">{priorityTag(1)}</Option>
-                      <Option value="5">{priorityTag(5)}</Option>
-                      <Option value="10">{priorityTag(10)}</Option>
+                      {[...Array(10).keys()].map((priority: number) => (
+                        <Option key={priority} value={priority + 1}>
+                          {priorityTag(priority + 1)}
+                        </Option>
+                      ))}
                     </Select>
                   </Form.Item>
                 </Col>
-              </Row>
+              </Row> */}
               <Row justify="center">
                 <Button htmlType="submit" type="primary">
                   Сохранить

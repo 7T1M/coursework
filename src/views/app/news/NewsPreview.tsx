@@ -3,26 +3,21 @@ import {
   Row,
   Col,
   Input,
-  Card,
   Select,
-  Typography,
   Button,
   Modal,
   Form,
   Divider,
   Upload,
-  message,
 } from "antd";
-import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import adminServices from "../../../services/admin";
-import { INews } from "./INews";
 import { IEditNewsData } from "./IEditNewsData";
-import { RootState } from "../../../store";
-import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+import { useAppSelector } from "../../../redux/hooks";
+import ICity from "../../../shared-interfaces/ICity";
+import newsPrioritys from "../../../models/newsPriority";
+import newsTypes from "../../../models/newsType";
+import Logger from "../../../logger/Logger";
 
-const { Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -33,14 +28,18 @@ interface INewsPreviewProps {
   image: string;
   setIsDataUpdated: any;
   title: string;
+  cityId: number;
+  priority: number;
+  type: number;
 }
 
 export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
   const [isInfoModalVisible, setIsInfoModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [imgUrl, setImgUrl] = useState("");
+  const [imgUrl, setImgUrl] = useState(_props.image);
   const auth = useAppSelector((state) => state.app.authToken);
   const reduxData = useAppSelector((state) => state.app);
+  const logger: Logger = useAppSelector((state) => state.app.logger!);
   const [form] = Form.useForm();
   let text: string = "";
   if (_props.description) {
@@ -53,32 +52,35 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
       .deleteNews(auth, _props.id)
       .finally(() => {
         _props.setIsDataUpdated(true);
+        logger.userDeleteRecord("news", _props.title);
       })
-      .catch((err:any) => console.error(err));
+      .catch((err: any) => console.error(err));
   }
 
   function onFinish(values: IEditNewsData) {
     values.id = _props.id;
-    values.previewImageUrl = imgUrl === "" ? undefined : imgUrl;
+    values.previewImageUrl = imgUrl;
+
     adminServices
       .updateNews(auth, values)
       .finally(() => {
         _props.setIsDataUpdated(true);
         setIsEditModalVisible(false);
         form.resetFields();
+        logger.userEditRecord("news", values.title);
       })
-      .catch((err:any) => console.error(err));
+      .catch((err: any) => console.error(err));
   }
   const uploadProps = {
     name: "file",
-    action: "http://localhost:3000/storage/load",
+    action: "http://api.rep2u.ru/storage/load",
     headers: {
       ContentType: "multipart/form-data",
       authorization: `Bearer ${auth}`,
     },
     onChange(info: any) {
       if (info.file.status !== "uploading") {
-        setImgUrl(`http://localhost:3000${info.file.response.data.url}`);
+        setImgUrl(`http://api.rep2u.ru${info.file.response.data.url}`);
       }
     },
   };
@@ -119,13 +121,18 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
           </Col>
         </Row>
         <Row justify="end">
-          <Col className="mr-5" span={3}>
-            <a onClick={() => setIsEditModalVisible(true)}>Изменить</a>
+          <Col className="mr-5">
+            <span
+              onClick={() => setIsEditModalVisible(true)}
+              className="text-blue-600"
+            >
+              Изменить
+            </span>
           </Col>
-          <Col span={3}>
-            <a onClick={handleDeleteClick} style={{ color: "red" }}>
+          <Col>
+            <span onClick={handleDeleteClick} className="text-red-600">
               Удалить
-            </a>
+            </span>
           </Col>
         </Row>
       </Col>
@@ -141,6 +148,7 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
             <div>
               <img style={{ width: "100%" }} src={_props.image} alt="" />
             </div>
+
             <Row>
               <Col span={24}>
                 <Divider />
@@ -167,12 +175,42 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
               <Row justify="space-between">
                 <Col span={11}>
                   <Form.Item name="name">
-                    <Input placeholder="Имя" />
+                    <Input placeholder="Имя" defaultValue={_props.name} />
                   </Form.Item>
                 </Col>
                 <Col span={11}>
                   <Form.Item name="title">
-                    <Input placeholder="Название" />
+                    <Input placeholder="Название" defaultValue={_props.title} />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row justify="space-between">
+                <Col span={11}>
+                  <Form.Item name="priority">
+                    <Select
+                      placeholder="Приоритет"
+                      defaultValue={String(_props.priority)}
+                    >
+                      {Object.keys(newsPrioritys).map((key) => (
+                        <Option key={key} value={key}>
+                          {newsPrioritys[key]}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={11}>
+                  <Form.Item name="type">
+                    <Select
+                      placeholder="Тип"
+                      defaultValue={String(_props.type)}
+                    >
+                      {Object.keys(newsTypes).map((key) => (
+                        <Option key={key} value={key}>
+                          {newsTypes[key]}
+                        </Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
               </Row>
@@ -186,21 +224,26 @@ export const NewsPreview: React.FC<INewsPreviewProps> = (_props) => {
                 </Col>
                 <Col span={11}>
                   <Form.Item name="cityId">
-                    <Select placeholder="Город">
-                      {reduxData.cities.map((item : any) => (
-                        <Option value={`${item.id}`}>{item.name}</Option>
+                    <Select placeholder="Город" defaultValue={_props.cityId}>
+                      {reduxData.cities.map((item: ICity) => (
+                        <Option key={item.id} value={item.id}>
+                          {item.name}
+                        </Option>
                       ))}
                     </Select>
                   </Form.Item>
                 </Col>
               </Row>
-              <Row justify="center">
-                <Col span={12}>
-                  <Form.Item name="description">
-                    <TextArea rows={8} placeholder="Описание" />
-                  </Form.Item>
-                </Col>
-              </Row>
+
+              <Form.Item name="description">
+                <TextArea
+                  rows={12}
+                  className="w-full "
+                  placeholder="Описание"
+                  defaultValue={_props.description}
+                />
+              </Form.Item>
+
               <Row justify="center">
                 <Button htmlType="submit" type="primary">
                   Сохранить

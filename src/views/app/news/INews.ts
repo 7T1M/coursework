@@ -4,5 +4,7 @@ export interface INews {
   previewImageUrl: string;
   cityId: number;
   description: string;
-  id?:number
+  id?: number;
+  priority: number;
+  type: number;
 }

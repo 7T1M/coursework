@@ -11,54 +11,61 @@ import {
   Form,
   List,
   Upload,
-  message,
 } from "antd";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectRoute } from "../../../redux/sideNavSlice";
 import adminServices from "../../../services/admin";
 import { NewsPreview } from "./NewsPreview";
 import { INews } from "./INews";
-import { RootState,AppDispatch } from "../../../store";
-import { useAppSelector,useAppDispatch } from "../../../redux/hooks";
+import { SearchOutlined } from "@ant-design/icons";
+import { useAppSelector, useAppDispatch } from "../../../redux/hooks";
+import ICity from "../../../shared-interfaces/ICity";
+import newsPrioritys from "../../../models/newsPriority";
+import newsTypes from "../../../models/newsType";
 
 const { Title } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
+
 export default function News() {
   const [isModaleVisible, setIsModaleVisible] = useState<Boolean>(false);
   const [loadedNews, setLoadedNews] = useState<Array<INews>>([]);
   const [isDataUpdated, setIsDataUpdated] = useState<Boolean>(false);
   const [isListLoading, setIsListLoading] = useState<Boolean>(false);
+  const [data, setData] = useState<INews[]>();
   const [imgUrl, setImgUrl] = useState<string>("");
   const auth: string = useAppSelector((state) => state.app.authToken);
   const reduxData = useAppSelector((state) => state.app);
+  const [pageSize, setPageSize] = useState<number>(4);
   const [form] = Form.useForm();
   const props = {
     name: "file",
-    action: "http://localhost:3000/storage/load",
+    action: "http://api.rep2u.ru/storage/load",
     headers: {
       ContentType: "multipart/form-data",
       authorization: `Bearer ${auth}`,
     },
     onChange(info: any) {
       if (info.file.status !== "uploading") {
-        setImgUrl(`http://localhost:3000${info.file.response.data.url}`);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        setImgUrl(`http://api.rep2u.ru${info.file.response.data.url}`);
       }
     },
   };
 
   const dispatch = useAppDispatch();
   const FormItem = Form.Item;
+
+  function searchInDataTableData(str: string) {
+    return loadedNews.filter((news) =>
+      news.title.toLocaleLowerCase().includes(str.toLowerCase())
+    );
+  }
+  function setSearchFilter(query: string): void {
+    setData(searchInDataTableData(query));
+  }
   useEffect(() => {
     dispatch(selectRoute("news"));
-    reduxData.logger!.userChangePage("news");
 
     setIsListLoading(true);
     getNews();
@@ -85,10 +92,9 @@ export default function News() {
   function onFinish(values: INews) {
     setIsListLoading(true);
     values.previewImageUrl = imgUrl;
-
     adminServices
       .createNews(auth, values)
-      .then((res: any) => {
+      .then(() => {
         setIsDataUpdated(true);
         setIsModaleVisible(false);
         setIsListLoading(false);
@@ -103,7 +109,6 @@ export default function News() {
       .then((res: any) => {
         setLoadedNews(res.data.data);
         setIsDataUpdated(false);
-       ;
         setIsListLoading(false);
       })
       .catch((err: any) => console.error(err));
@@ -123,6 +128,9 @@ export default function News() {
           description={news.description}
           image={news.previewImageUrl}
           setIsDataUpdated={setIsDataUpdated}
+          cityId={news.cityId}
+          priority={news.priority}
+          type={news.type}
         />
       </Col>
     );
@@ -135,11 +143,11 @@ export default function News() {
           <Col span={18}>
             <Row>
               <span className="opacity-80">{updateTime} </span>
-              <div className="text-2xl mx-5 leading-5 text-[#1B3452] opacity-80	 ">
+              <div className="text-2xl mx-3 mt-px leading-5 text-[#1B3452] opacity-80	 ">
                 &bull;{" "}
               </div>
               <div
-                className=" text-blue-700 opacity-85 cursor-pointer opacity-80"
+                className=" text-blue-700 opacity-85 cursor-pointer opacity-70 hover:opacity-100"
                 onClick={updateData}
               >
                 Обновить
@@ -161,10 +169,7 @@ export default function News() {
             ></img>
           </Col> */}
           <Col span={24}>
-            <span className="text-xs text-[#1B3452] opacity-80">
-              Вы также можете создать статью:
-            </span>
-            <Row className="mt-1">
+            <Row className="mt-5">
               <Col span={8}>
                 <Button onClick={() => setIsModaleVisible(true)} type="primary">
                   Создать
@@ -175,16 +180,43 @@ export default function News() {
         </Row>
         <Row className="px-3" style={{ marginTop: 24 }}>
           <Col span={24}>
-            <Card>Список новостей</Card>
+            <Card>
+              <Row justify={"space-between"}>
+                <Col span={12}>
+                  <Input
+                    placeholder="Поиск по заголовку..."
+                    prefix={<SearchOutlined className="site-form-item-icon" />}
+                    onChange={(e) => setSearchFilter(e.target.value)}
+                  />
+                </Col>
+                <Col span={7}>
+                  <Row justify={"center"}>
+                    <Col style={{ width: "100%" }}>
+                      <Select
+                        style={{ width: "100%" }}
+                        defaultValue={4}
+                        value={pageSize}
+                        onChange={(e) => setPageSize(e)}
+                      >
+                        <Option value={4}>Показывать по 4шт.</Option>
+                        <Option value={8}>Показывать по 8шт.</Option>
+                        <Option value={12}>Показывать по 12шт.</Option>
+                      </Select>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Card>
           </Col>
         </Row>
 
         <Col span={24}>
           <List
             grid={{ md: 1, lg: 2, xl: 2, xxl: 2 }}
-            dataSource={loadedNews}
+            dataSource={data ?? loadedNews}
             renderItem={(item) => renderNews(item)}
             loading={isListLoading === true}
+            pagination={{ pageSize: pageSize }}
           ></List>
         </Col>
 
@@ -234,8 +266,52 @@ export default function News() {
                       ]}
                     >
                       <Select style={{ width: "100%" }} placeholder="Город">
-                        {reduxData.cities?.map((item: any) => (
-                          <Option value={item.id}>{item.name}</Option>
+                        {reduxData.cities?.map((item: ICity) => (
+                          <Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={24}>
+                    <FormItem
+                      name="priority"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Укажите приоритет новости",
+                        },
+                      ]}
+                    >
+                      <Select style={{ width: "100%" }} placeholder="Приоритет">
+                        {Object.keys(newsPrioritys).map((item) => (
+                          <Option key={item} value={item}>
+                            {newsPrioritys[item]}
+                          </Option>
+                        ))}
+                      </Select>
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={24}>
+                    <FormItem
+                      name="type"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Укажите тип новости",
+                        },
+                      ]}
+                    >
+                      <Select style={{ width: "100%" }} placeholder="Тип">
+                        {Object.keys(newsTypes).map((item) => (
+                          <Option key={item} value={item}>
+                            {newsTypes[item]}
+                          </Option>
                         ))}
                       </Select>
                     </FormItem>

@@ -18,8 +18,7 @@ export default class Decorator {
       } else if (rate >= 66) {
         return <Tag color={"green"}>{rate}</Tag>;
       }
-    }  
-      return "Нет рейтинга ";
-    
+    }
+    return "Нет рейтинга";
   }
 }
