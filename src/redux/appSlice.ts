@@ -5,6 +5,8 @@ import { IClaimType } from "../shared-interfaces/IClaimType";
 
 import { IService } from "../shared-interfaces/IService";
 import Logger from "../logger/Logger";
+import { IRoute } from "../shared-interfaces/IRoute";
+import IPoint from "../shared-interfaces/IPoint";
 
 const initialState = {
   authToken: "",
@@ -26,7 +28,12 @@ export const counterSlice = createSlice({
     setCities: (s, action: PayloadAction<ICity[]>) => {
       s.cities = action.payload;
     },
-
+    setPoints: (s, action: PayloadAction<IPoint[]>) => {
+      s.points = action.payload;
+    },
+    setRoutes: (s, action: PayloadAction<IRoute[]>) => {
+      s.routes = action.payload;
+    },
     setClaimTypes: (s, action: PayloadAction<IClaimType[]>) => {
       s.claimTypes = action.payload;
     },
@@ -42,9 +49,9 @@ export const counterSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   setAuthToken,
-
+  setPoints,
   setCities,
-
+  setRoutes,
   setClaimTypes,
   setServices,
   setLogger,

@@ -11,6 +11,7 @@ import {
   setClaimTypes,
   setServices,
   setLogger,
+  setAuthToken,
 } from "../redux/appSlice";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import Logger from "../logger/Logger";
@@ -46,6 +47,9 @@ export default function AppLayout() {
     adminServices.getServices(auth).then((res) => {
       dispatch(setServices(res.data.data));
     });
+    if (logger === undefined) {
+      dispatch(setAuthToken(""));
+    }
     if (!(logger instanceof Logger)) {
       const newLogger = new Logger(logger!.userName, logger!.logText);
       dispatch(setLogger(newLogger));
