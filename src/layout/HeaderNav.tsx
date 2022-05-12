@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import { setCollapsed } from "../redux/sideNavSlice";
 import { Layout, Row, Col, Button } from "antd";
-import dpr from "../assets/img/ur-dpr75.png";
+import dpr from "../assets/img/logo.png";
 import { setAuthToken } from "../redux/appSlice";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";

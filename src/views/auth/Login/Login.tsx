@@ -1,6 +1,6 @@
 import React from "react";
 import LoginForm from "./components/LoginForm";
-import logo from "../../../assets/img/ur-dpr.png";
+import logo from "../../../assets/img/auth-logo.png";
 import { Row, Col } from "antd";
 
 export default function Login() {
